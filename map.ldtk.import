@@ -1,0 +1,32 @@
+[remap]
+
+importer="LDtk_world.import"
+type="PackedScene"
+uid="uid://bik4hkpc00lfa"
+path="res://.godot/imported/map.ldtk-b200d11adbd17646993c426f58b154f2.scn"
+
+[deps]
+
+files=["res:///map/tilesets/map-tileset-8x8.res", "res:///map/tilesets/map-tileset-16x16.res"]
+
+source_file="res://map.ldtk"
+dest_files=["res://.godot/imported/map.ldtk-b200d11adbd17646993c426f58b154f2.scn", "res:///map/tilesets/map-tileset-8x8.res", "res:///map/tilesets/map-tileset-16x16.res"]
+
+[params]
+
+world_add_metadata=true
+world_post_import_script=""
+Tilesets=""
+tileset_add_metadata=true
+import_tileset_custom_data=true
+tileset_post_import_script="res://scripts/ldtk/post-import-tileset-add-collisions-by-enum.gd"
+Levels=""
+level_add_metadata=true
+import_all_levels=true
+levels_to_import="0,1"
+pack_levels=false
+level_post_import_script="res://scripts/ldtk/post-import-add-level-areas.gd"
+Entities=""
+import_entities=true
+entity_add_metadata=true
+entity_post_import_script=""

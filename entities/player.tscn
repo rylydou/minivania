@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://3xo70nvp6fty"]
+
+[ext_resource type="Script" path="res://entities/player.gd" id="1_d0u18"]
+[ext_resource type="Texture2D" uid="uid://cwfx346r54376" path="res://sprites/player.png" id="1_s1k2y"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_33p7t"]
+size = Vector2(3, 4)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_w7vl2"]
+radius = 1.0
+
+[node name="Player" type="CharacterBody2D"]
+z_index = 1
+collision_layer = 16
+floor_constant_speed = true
+script = ExtResource("1_d0u18")
+move_max_speed = 32.0
+jump_height_max = 16.0
+
+[node name="Flip" type="Node2D" parent="."]
+
+[node name="Sprite" type="Sprite2D" parent="Flip"]
+texture = ExtResource("1_s1k2y")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2)
+shape = SubResource("RectangleShape2D_33p7t")
+
+[node name="RoomDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomDetector"]
+shape = SubResource("CircleShape2D_w7vl2")
+
+[connection signal="area_entered" from="RoomDetector" to="." method="_on_room_detector_area_entered"]
