@@ -19,9 +19,10 @@ const FRAME_BASIS = 60.0
 @export var jump_frames := 60
 @onready var jump_time := jump_frames / FRAME_BASIS
 @export var jump_height_max := 18.0
+@export var max_fall_speed_ratio := 2.0
+
 @onready var gravity := calculate_gravity_for_jump(jump_height_max, jump_time)
-@export var gravity_control_reduce := 0.50
-@export var gravity_conrtol_increase := 1.50
+@onready var max_fall_speed := calculate_jump_velocity(jump_height_max) * max_fall_speed_ratio
 
 @export_group('Assits')
 @export var coyote_time_frames := 6
@@ -29,6 +30,9 @@ var coyote_timer := -1.0
 @export var jump_buffer_frames := 6
 var jump_buffer_timer := -1.0
 @export var max_bonknuge_distance := 4.0
+
+func _enter_tree() -> void:
+	Globals.player = self
 
 var input_move := Vector2.ZERO
 var input_jump := false
@@ -93,7 +97,6 @@ func process_gravity(delta: float) -> void:
 	else:
 		speed_vertical += gravity * delta
 	
-	var max_fall_speed := calculate_jump_velocity(jump_height_max)
 	if speed_vertical > max_fall_speed:
 		speed_vertical = max_fall_speed
 

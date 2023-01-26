@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://b8vsr5kejge5s"]
+[gd_scene load_steps=6 format=3 uid="uid://b8vsr5kejge5s"]
 
 [ext_resource type="Script" path="res://main.gd" id="1_5awxw"]
 [ext_resource type="PackedScene" uid="uid://bik4hkpc00lfa" path="res://map.ldtk" id="2_b5214"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="3_fvi2k"]
 [ext_resource type="PackedScene" uid="uid://3xo70nvp6fty" path="res://entities/player.tscn" id="4_yg6k3"]
+
+[sub_resource type="Curve" id="Curve_g4vxu"]
+max_value = 32.0
+_data = [Vector2(0.4, 4), 0.0, 0.0, 0, 0, Vector2(0.9, 32), 56.0, 0.0, 1, 0]
+point_count = 2
 
 [node name="Main" type="Node"]
 script = ExtResource("1_5awxw")
@@ -15,9 +20,11 @@ position = Vector2(80, 40)
 
 [node name="Camera" type="Camera2D" parent="."]
 current = true
-process_callback = 0
-position_smoothing_enabled = true
-position_smoothing_speed = 8.0
+limit_smoothed = true
+position_smoothing_speed = 6.0
+editor_draw_limits = true
 script = ExtResource("3_fvi2k")
+transition_smoothing_curve = SubResource("Curve_g4vxu")
 
+[connection signal="room_changed" from="." to="Camera" method="_on_main_room_changed"]
 [connection signal="entered_room" from="Player" to="." method="_on_player_entered_room"]
