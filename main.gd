@@ -15,8 +15,6 @@ func _enter_tree() -> void:
 func _ready() -> void:
 	var entities: Array = $Map/Start/Entities.get_meta('LDtk_entity_instances')
 	
-	print(entities.size())
-	
 	for entity in entities:
 		if not entity.identifier == 'PlayerStart': continue
 		print('found player start at %s' % entity.px)

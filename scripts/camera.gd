@@ -8,12 +8,16 @@ const FRAME_BASIS := 60.0
 
 @onready var player := Globals.player
 
+func _ready() -> void:
+	position = player.position
+	#align()
+	#force_update_scroll()
+	#reset_smoothing()
+
+func _physics_process(delta: float) -> void:
+	position = player.position
+
 func _process(delta: float) -> void:
-	var target := player.position
-	
-	position.x = target.x
-	position.y = target.y
-	
 	var was_finsihed_transitioning := transition_smoothing_timer > transition_smoothing_time
 	transition_smoothing_timer += delta
 	var is_finsihed_transitioning := transition_smoothing_timer > transition_smoothing_time

@@ -32,7 +32,7 @@ position = Vector2(0, -2)
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="RoomDetector"]
+[node name="Shape" type="CollisionShape2D" parent="RoomDetector"]
 shape = SubResource("CircleShape2D_w7vl2")
 
 [connection signal="area_entered" from="RoomDetector" to="." method="_on_room_detector_area_entered"]

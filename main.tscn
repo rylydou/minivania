@@ -7,7 +7,7 @@
 
 [sub_resource type="Curve" id="Curve_g4vxu"]
 max_value = 32.0
-_data = [Vector2(0.4, 4), 0.0, 0.0, 0, 0, Vector2(0.9, 32), 56.0, 0.0, 1, 0]
+_data = [Vector2(0.4, 6), 0.0, 0.0, 0, 0, Vector2(0.9, 32), 52.0, 0.0, 1, 0]
 point_count = 2
 
 [node name="Main" type="Node"]
@@ -16,10 +16,10 @@ script = ExtResource("1_5awxw")
 [node name="Map" parent="." instance=ExtResource("2_b5214")]
 
 [node name="Player" parent="." instance=ExtResource("4_yg6k3")]
-position = Vector2(80, 40)
 
 [node name="Camera" type="Camera2D" parent="."]
 current = true
+process_callback = 0
 limit_smoothed = true
 position_smoothing_speed = 6.0
 editor_draw_limits = true
