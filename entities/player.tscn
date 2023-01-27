@@ -15,12 +15,16 @@ collision_layer = 16
 floor_constant_speed = true
 script = ExtResource("1_d0u18")
 move_max_speed = 36.0
-jump_height_max = 16.0
+jump_frames = 35
+jump_height = 9.0
+double_jump_height = 12.0
 
 [node name="Flip" type="Node2D" parent="."]
 position = Vector2(0, -4)
 
-[node name="Sprite" type="Sprite2D" parent="Flip"]
+[node name="Art" type="Node2D" parent="Flip"]
+
+[node name="Sprite" type="Sprite2D" parent="Flip/Art"]
 texture = ExtResource("1_s1k2y")
 
 [node name="Collision" type="CollisionShape2D" parent="."]

@@ -18,11 +18,11 @@ const FRAME_BASIS = 60.0
 @export_group('Jumping')
 @export var jump_frames := 60
 @onready var jump_time := jump_frames / FRAME_BASIS
-@export var jump_height_max := 18.0
+@export var jump_height := 18.0
 @export var max_fall_speed_ratio := 2.0
 
-@onready var gravity := calculate_gravity_for_jump(jump_height_max, jump_time)
-@onready var max_fall_speed := calculate_jump_velocity(jump_height_max) * max_fall_speed_ratio
+@onready var gravity := calculate_gravity_for_jump(jump_height, jump_time)
+@onready var max_fall_speed := calculate_jump_velocity(jump_height) * max_fall_speed_ratio
 
 @export_group('Assits')
 @export var coyote_time_frames := 6
@@ -31,12 +31,19 @@ var coyote_timer := -1.0
 var jump_buffer_timer := -1.0
 @export var max_bonknuge_distance := 4.0
 
+@export_group('Double Jump')
+@export var double_jump_height := 18.0
+
+@export_group('Dash')
+@export var dash_distance := 32.0
+@export var dash_frames := 10.0
+@onready var dash_time := dash_frames / FRAME_BASIS
+
+@onready var art_node: Node2D = $Flip/Art
+
 func _enter_tree() -> void:
 	Globals.player = self
 
-var input_move := Vector2.ZERO
-var input_jump := false
-var input_jump_press := false
 func _process(delta: float) -> void:
 	process_inputs()
 	
@@ -48,19 +55,26 @@ func _process(delta: float) -> void:
 		position = get_global_mouse_position()
 		speed_vertical = 0
 
+var input_move := Vector2.ZERO
+var input_jump := false
+var input_jump_press := false
+var input_action_press := false
 func process_inputs() -> void:
 	input_move.x = Input.get_axis('move_left', 'move_right')
-	input_move.y = Input.get_axis('move_down', 'move_up')
+	input_move.y = Input.get_axis('move_up', 'move_down')
 	
 	input_jump = Input.is_action_pressed('jump')
 	
 	if Input.is_action_just_pressed('jump'):
 		input_jump_press = true
+	
+	if Input.is_action_just_pressed('action'):
+		input_action_press = true
 
-var speed_move = 0.0
-var speed_extra = 0.0
-var speed_vertical = 0.0
-var facing_direction = 1.0
+var speed_move := 0.0
+var speed_extra := 0.0
+var speed_vertical := 0.0
+var facing_direction := 1.0
 func _physics_process(delta: float) -> void:
 	process_movement(delta)
 	process_gravity(delta)
@@ -110,6 +124,7 @@ func try_bonknudge(distance: float) -> bool:
 	return false
 
 var can_control_fall_speed := false
+var can_double_jump := false
 func process_jump(delta: float) -> void:
 	if Input.is_action_pressed('debug_fly'):
 		if speed_vertical > 0.0:
@@ -119,6 +134,7 @@ func process_jump(delta: float) -> void:
 	coyote_timer -= delta
 	if is_on_floor():
 		coyote_timer = coyote_time_frames / FRAME_BASIS
+		can_double_jump = true
 	
 	jump_buffer_timer -= delta
 	if input_jump_press:
@@ -128,11 +144,18 @@ func process_jump(delta: float) -> void:
 	if coyote_timer > 0.0 and jump_buffer_timer > 0.0:
 		coyote_timer = 0.0
 		jump_buffer_timer = 0.0
-		
-		var jump_velocity := calculate_jump_velocity(jump_height_max)
-		speed_vertical = -jump_velocity
-		
 		can_control_fall_speed = true
+		
+		var jump_velocity := calculate_jump_velocity(jump_height)
+		speed_vertical = -jump_velocity
+	
+	if can_double_jump and jump_buffer_timer > 0.0 and input_move.y < 0.0:
+		jump_buffer_timer = 0.0
+		can_double_jump = false
+		can_control_fall_speed = true
+		
+		var jump_velocity := calculate_jump_velocity(double_jump_height)
+		speed_vertical = -jump_velocity
 
 func move() -> void:
 	velocity.x = speed_move + speed_extra
@@ -149,3 +172,6 @@ func calculate_jump_velocity(height: float) -> float:
 
 func _on_room_detector_area_entered(area: Area2D) -> void:
 	entered_room.emit(area.get_parent())
+	if speed_vertical < 0.0:
+		speed_vertical = -calculate_jump_velocity(8 * 3.0 + 2)
+	can_double_jump = true

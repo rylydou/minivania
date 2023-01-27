@@ -19,6 +19,7 @@ script = ExtResource("1_5awxw")
 
 [node name="Camera" type="Camera2D" parent="."]
 current = true
+zoom = Vector2(2, 2)
 process_callback = 0
 limit_smoothed = true
 position_smoothing_speed = 6.0
