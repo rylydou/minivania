@@ -149,7 +149,7 @@ func process_jump(delta: float) -> void:
 		var jump_velocity := calculate_jump_velocity(jump_height)
 		speed_vertical = -jump_velocity
 	
-	if can_double_jump and jump_buffer_timer > 0.0 and input_move.y < 0.0:
+	if can_double_jump and jump_buffer_timer > 0.0:
 		jump_buffer_timer = 0.0
 		can_double_jump = false
 		can_control_fall_speed = true
