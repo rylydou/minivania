@@ -44,6 +44,7 @@ window/size/always_on_top=true
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="viewport"
+window/stretch/aspect="expand"
 
 [dotnet]
 
@@ -51,7 +52,7 @@ project/assembly_name="Minivania"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/amano-ldtk-importer/plugin.cfg")
+enabled=PackedStringArray("res://addons/amano-ldtk-importer/plugin.cfg", "res://addons/AsepriteWizard/plugin.cfg")
 
 [input]
 

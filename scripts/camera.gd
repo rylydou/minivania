@@ -15,7 +15,11 @@ func _ready() -> void:
 	#reset_smoothing()
 
 func _physics_process(delta: float) -> void:
-	position = player.position
+	position.x = player.position.x
+	#position.y = player.position.y
+	position.y = lerp(position.y, player.position.y, 6.0 * delta)
+	#if player.test_move(player.transform, Vector2.DOWN) or player.position.y > position.y:
+	#	position.y = lerp(position.y, player.position.y, 6.0 * delta)
 
 func _process(delta: float) -> void:
 	var was_finsihed_transitioning := transition_smoothing_timer > transition_smoothing_time

@@ -3,7 +3,7 @@ extends Node
 
 const Tile = preload("res://addons/amano-ldtk-importer/util/tile.gd")
 
-const SHAPE_BLOCK_FLAG := 'Shape_Block'
+const SHAPE_BLOCK_FLAG := 'Block'
 
 const CUSTOM_DATA_LAYER_NAME := 'LDtk_tile_data'
 

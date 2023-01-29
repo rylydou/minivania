@@ -11,6 +11,7 @@ var bounds: Rect2
 
 func _enter_tree() -> void:
 	Globals.main = self
+	get_window().grab_focus()
 
 func _ready() -> void:
 	var entities: Array = $Map/Start/Entities.get_meta('LDtk_entity_instances')
@@ -19,6 +20,8 @@ func _ready() -> void:
 		if not entity.identifier == 'PlayerStart': continue
 		print('found player start at %s' % entity.px)
 		player.position = entity.px
+		player.position.y -= 8.0
+		break
 
 func enter_room(room: Node2D):
 	print('going to room %s' % room.name)

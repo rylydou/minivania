@@ -20,6 +20,7 @@ const FRAME_BASIS = 60.0
 @onready var jump_time := jump_frames / FRAME_BASIS
 @export var jump_height := 18.0
 @export var max_fall_speed_ratio := 2.0
+var is_jumping := false
 
 @onready var gravity := calculate_gravity_for_jump(jump_height, jump_time)
 @onready var max_fall_speed := calculate_jump_velocity(jump_height) * max_fall_speed_ratio
@@ -33,11 +34,15 @@ var jump_buffer_timer := -1.0
 
 @export_group('Double Jump')
 @export var double_jump_height := 18.0
+var can_double_jump := false
+var is_double_jumping := false
 
 @export_group('Dash')
 @export var dash_distance := 32.0
-@export var dash_frames := 10.0
+@export var dash_frames := 30.0
 @onready var dash_time := dash_frames / FRAME_BASIS
+var dash_timer := 0.0
+var can_dash := false
 
 @onready var art_node: Node2D = $Flip/Art
 
@@ -54,6 +59,23 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed('debug_teleport'):
 		position = get_global_mouse_position()
 		speed_vertical = 0
+	
+	var anim := get_animation()
+	$Flip/Art/AnimationPlayer.play(anim)
+
+func get_animation() -> String:
+	if is_on_floor():
+		if speed_move != 0.0:
+			return 'Walk'
+		return 'Idle'
+	# is airborne:
+	if speed_vertical > calculate_jump_velocity(jump_height):
+		return 'Fall'
+	if is_double_jumping:
+		return 'Fall'
+	if is_jumping:
+		return 'Jump'
+	return 'Fall'
 
 var input_move := Vector2.ZERO
 var input_jump := false
@@ -76,11 +98,31 @@ var speed_extra := 0.0
 var speed_vertical := 0.0
 var facing_direction := 1.0
 func _physics_process(delta: float) -> void:
-	process_movement(delta)
-	process_gravity(delta)
-	process_jump(delta)
+	if dash_timer > 0.0:
+		dash_timer -= delta
+		move_and_slide()
+		process_doublejump(delta)
+		if input_jump_press or is_on_wall():
+			dash_timer = 0.0
+			speed_extra = velocity.x
+	else:
+		if is_on_floor():
+			can_dash = true
+			can_double_jump = true
+			is_jumping = false
+			is_double_jumping = false
+		
+		process_movement(delta)
+		process_gravity(delta)
+		process_jump(delta)
+		process_doublejump(delta)
+		
+		move()
+		
+		process_dash(delta)
 	
-	move()
+	input_jump_press = false
+	input_action_press = false
 
 func process_movement(delta: float) -> void:
 	speed_move = input_move.x * move_max_speed
@@ -123,8 +165,6 @@ func try_bonknudge(distance: float) -> bool:
 		x = move_toward(x, distance, 1)
 	return false
 
-var can_control_fall_speed := false
-var can_double_jump := false
 func process_jump(delta: float) -> void:
 	if Input.is_action_pressed('debug_fly'):
 		if speed_vertical > 0.0:
@@ -134,33 +174,39 @@ func process_jump(delta: float) -> void:
 	coyote_timer -= delta
 	if is_on_floor():
 		coyote_timer = coyote_time_frames / FRAME_BASIS
-		can_double_jump = true
 	
 	jump_buffer_timer -= delta
 	if input_jump_press:
 		jump_buffer_timer = jump_buffer_frames / FRAME_BASIS
-		input_jump_press = false
 	
 	if coyote_timer > 0.0 and jump_buffer_timer > 0.0:
+		is_jumping = true
+		input_jump_press = false
 		coyote_timer = 0.0
 		jump_buffer_timer = 0.0
-		can_control_fall_speed = true
 		
 		var jump_velocity := calculate_jump_velocity(jump_height)
 		speed_vertical = -jump_velocity
-	
-	if can_double_jump and jump_buffer_timer > 0.0:
-		jump_buffer_timer = 0.0
+
+func process_doublejump(delta: float) -> void:
+	if can_double_jump and input_jump_press:
+		is_double_jumping = true
+		is_jumping = false
 		can_double_jump = false
-		can_control_fall_speed = true
 		
 		var jump_velocity := calculate_jump_velocity(double_jump_height)
 		speed_vertical = -jump_velocity
 
+func process_dash(delta: float) -> void:
+	if can_dash and input_action_press:
+		can_dash = false
+		dash_timer = dash_time
+		velocity.x = dash_distance / dash_time * facing_direction
+		velocity.y = 0.0
+
 func move() -> void:
 	velocity.x = speed_move + speed_extra
 	velocity.y = speed_vertical
-	up_direction = Vector2.UP
 	
 	move_and_slide()
 
