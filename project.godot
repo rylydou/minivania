@@ -54,6 +54,10 @@ project/assembly_name="Minivania"
 
 enabled=PackedStringArray("res://addons/amano-ldtk-importer/plugin.cfg", "res://addons/AsepriteWizard/plugin.cfg")
 
+[filesystem]
+
+import/blender/enabled=false
+
 [input]
 
 move_left={
@@ -117,8 +121,12 @@ debug_teleport={
 [layer_names]
 
 2d_physics/layer_1="Ground"
-2d_physics/layer_2="Room"
+2d_physics/layer_2="Climb"
+2d_physics/layer_3="Swim"
+2d_physics/layer_4="(resered for terrain)"
 2d_physics/layer_5="Player"
+2d_physics/layer_6="Hitbox"
+2d_physics/layer_8="Room"
 
 [rendering]
 

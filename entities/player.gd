@@ -1,6 +1,6 @@
 class_name Player extends CharacterBody2D
 
-signal entered_room(room: Node2D);
+signal entered_level(level: Node2D);
 
 const FRAME_BASIS = 60.0
 
@@ -15,11 +15,11 @@ const FRAME_BASIS = 60.0
 @export var move_dec_frames := 6
 @onready var move_dec_time := move_dec_frames / FRAME_BASIS
 
-@export_group('Jumping')
+@export_group('Jump')
 @export var jump_frames := 60
 @onready var jump_time := jump_frames / FRAME_BASIS
 @export var jump_height := 18.0
-@export var max_fall_speed_ratio := 2.0
+@export var max_fall_speed_ratio := 1.5
 var is_jumping := false
 
 @onready var gravity := calculate_gravity_for_jump(jump_height, jump_time)
@@ -44,13 +44,29 @@ var is_double_jumping := false
 var dash_timer := 0.0
 var can_dash := false
 
+@export_group('Climb')
+@export var climb_speed_vertical := 24.0
+@export var climb_speed_horizontal := 16.0
+var is_clibing := false
+
+var is_dead := false
+
 @onready var art_node: Node2D = $Flip/Art
 
 func _enter_tree() -> void:
 	Globals.player = self
 
 func _process(delta: float) -> void:
+	
 	process_inputs()
+	
+	if Input.is_key_pressed(KEY_K) and not is_dead:
+		die()
+	
+	var anim := get_animation()
+	$Flip/Art/AnimationPlayer.play(anim)
+	
+	if is_dead: return
 	
 	if input_move.x != 0:
 		facing_direction = sign(input_move.x)
@@ -59,33 +75,38 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed('debug_teleport'):
 		position = get_global_mouse_position()
 		speed_vertical = 0
-	
-	var anim := get_animation()
-	$Flip/Art/AnimationPlayer.play(anim)
 
 func get_animation() -> String:
+	$Flip/Art/AnimationPlayer.speed_scale = 1.0
+	if is_dead:
+		return 'hurt'
+	
+	if is_clibing:
+		if input_move.y == 0.0:
+			$Flip/Art/AnimationPlayer.speed_scale = 0.0
+		return 'climb'
+	
+	if dash_timer > 0.0:
+		return 'dash'
+	
 	if is_on_floor():
 		if speed_move != 0.0:
-			return 'Walk'
-		return 'Idle'
+			return 'walk'
+		return 'idle'
 	# is airborne:
-	if speed_vertical > calculate_jump_velocity(jump_height):
-		return 'Fall'
+	
 	if is_double_jumping:
-		return 'Fall'
+		return 'double_jump'
 	if is_jumping:
-		return 'Jump'
-	return 'Fall'
+		return 'jump'
+	return 'fall'
 
 var input_move := Vector2.ZERO
-var input_jump := false
 var input_jump_press := false
 var input_action_press := false
 func process_inputs() -> void:
 	input_move.x = Input.get_axis('move_left', 'move_right')
 	input_move.y = Input.get_axis('move_up', 'move_down')
-	
-	input_jump = Input.is_action_pressed('jump')
 	
 	if Input.is_action_just_pressed('jump'):
 		input_jump_press = true
@@ -98,19 +119,41 @@ var speed_extra := 0.0
 var speed_vertical := 0.0
 var facing_direction := 1.0
 func _physics_process(delta: float) -> void:
-	if dash_timer > 0.0:
+	if is_dead: return
+	
+	if is_clibing:
+		if $ClimbArea.get_overlapping_bodies().size() == 0:
+			is_clibing = false
+		
+		speed_vertical = input_move.y * climb_speed_vertical
+		speed_move = input_move.x * climb_speed_horizontal
+		
+		if input_jump_press:
+			speed_vertical = -calculate_jump_velocity(jump_height)
+			is_jumping = true
+			is_clibing = false
+		
+		move()
+	elif dash_timer > 0.0:
 		dash_timer -= delta
 		move_and_slide()
 		process_doublejump(delta)
 		if input_jump_press or is_on_wall():
 			dash_timer = 0.0
-			speed_extra = velocity.x
 	else:
 		if is_on_floor():
 			can_dash = true
 			can_double_jump = true
 			is_jumping = false
 			is_double_jumping = false
+		
+		if $ClimbArea.get_overlapping_bodies():
+			if input_move.y != 0.0:
+				is_clibing = true
+				is_jumping = false
+				is_double_jumping = false
+				can_dash = true
+				can_double_jump = true
 		
 		process_movement(delta)
 		process_gravity(delta)
@@ -199,6 +242,9 @@ func process_doublejump(delta: float) -> void:
 
 func process_dash(delta: float) -> void:
 	if can_dash and input_action_press:
+		speed_move = 0.0
+		speed_extra = 0.0
+		speed_vertical = 0.0
 		can_dash = false
 		dash_timer = dash_time
 		velocity.x = dash_distance / dash_time * facing_direction
@@ -216,8 +262,26 @@ func calculate_gravity_for_jump(height: float, duration: float) -> float:
 func calculate_jump_velocity(height: float) -> float:
 	return sqrt(2 * gravity * height)
 
-func _on_room_detector_area_entered(area: Area2D) -> void:
-	entered_room.emit(area.get_parent())
+var respawn_point: Vector2
+func set_respawn_point() -> void:
+	respawn_point = position
+
+func die() -> void:
+	is_dead = true
+	
+	var transition_duration := position.distance_to(respawn_point) / 128.0
+	var tween = get_tree().create_tween()
+	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	await tween.tween_property(self, 'position', respawn_point, transition_duration)\
+		.set_ease(Tween.EASE_IN_OUT)\
+		.set_trans(Tween.TRANS_SINE)\
+		.finished
+	
+	is_dead = false
+
+func _on_level_detector_area_entered(area: Area2D) -> void:
+	entered_level.emit(area.get_parent())
+	set_respawn_point()
 	if speed_vertical < 0.0:
 		speed_vertical = -calculate_jump_velocity(8 * 3.0 + 2)
 	can_double_jump = true

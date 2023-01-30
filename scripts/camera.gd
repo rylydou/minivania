@@ -31,7 +31,7 @@ func _process(delta: float) -> void:
 	var transition_smoothing_ratio := transition_smoothing_timer / transition_smoothing_time
 	position_smoothing_speed = transition_smoothing_curve.sample_baked(transition_smoothing_ratio)
 
-func _on_main_room_changed() -> void:
+func _on_main_level_changed() -> void:
 	transition_smoothing_timer = 0.0
 	position_smoothing_speed = transition_smoothing_curve.sample_baked(0.0)
 	position_smoothing_enabled = true

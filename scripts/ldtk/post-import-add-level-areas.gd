@@ -1,8 +1,8 @@
 @tool
 extends Node
 
-var level_area_padding := Vector2i(0, 0)
-var level_area_collision_layer := 2
+var level_area_padding := Vector2i(-1, -1)
+var level_area_collision_layer := 8
 var level_area_opacity := 0.25
 
 func post_import(level: Node2D) -> Node2D:
@@ -31,7 +31,7 @@ static func get_level_area(
 
 	level_area.position.x = level_extents.x
 	level_area.position.y = level_extents.y
-	level_area.collision_layer = area_collision_layer
+	level_area.set_collision_layer_value(area_collision_layer, true)
 	level_area.collision_mask = 0
 	level_area.show_behind_parent = true
 
