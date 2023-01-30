@@ -2,54 +2,56 @@ class_name Player extends CharacterBody2D
 
 signal entered_level(level: Node2D);
 
-const FRAME_BASIS = 60.0
+const TPS = 60.0
 
-@export_group('Movement')
-@export var move_max_speed := 12.0
+@export_group('Platformer State')
+@export var walk_speed := 36.0
 
-@export var move_acc_curve: Curve
-@export var move_acc_frames := 8
-@onready var move_acc_time := move_acc_frames / FRAME_BASIS
-
-@export var move_dec_curve: Curve
-@export var move_dec_frames := 6
-@onready var move_dec_time := move_dec_frames / FRAME_BASIS
-
-@export_group('Jump')
-@export var jump_frames := 60
-@onready var jump_time := jump_frames / FRAME_BASIS
+@export_subgroup('Jump')
+@export var jump_ticks := 35
+@onready var jump_time := jump_ticks / TPS
 @export var jump_height := 18.0
 @export var max_fall_speed_ratio := 1.5
 var is_jumping := false
 
-@onready var gravity := calculate_gravity_for_jump(jump_height, jump_time)
-@onready var max_fall_speed := calculate_jump_velocity(jump_height) * max_fall_speed_ratio
+@onready var normal_gravity := calculate_gravity_for_jump(jump_height, jump_time)
 
-@export_group('Assits')
-@export var coyote_time_frames := 6
+@export_subgroup('Assits')
+@export var coyote_time_ticks := 6
 var coyote_timer := -1.0
-@export var jump_buffer_frames := 6
+@export var jump_buffer_ticks := 6
 var jump_buffer_timer := -1.0
 @export var max_bonknuge_distance := 4.0
 
-@export_group('Double Jump')
+@export_subgroup('Double Jump')
 @export var double_jump_height := 18.0
 var can_double_jump := false
 var is_double_jumping := false
 
-@export_group('Dash')
+@export_subgroup('Dash')
 @export var dash_distance := 32.0
-@export var dash_frames := 30.0
-@onready var dash_time := dash_frames / FRAME_BASIS
+@export var dash_ticks := 12.0
+@onready var dash_time := dash_ticks / TPS
 var dash_timer := 0.0
 var can_dash := false
 
-@export_group('Climb')
+@export_group('Climb State')
 @export var climb_speed_vertical := 24.0
 @export var climb_speed_horizontal := 16.0
 var is_clibing := false
 
+@export_group('Swim State')
+@export var swim_speed := 24.0
+@export var swim_surface_jump_height := 24.0
+@export var swim_gravity_reduce := 0.5
+
+@export_group('Dead State')
+@export var transition_speed := 96.0
+
+var is_swiming := false
 var is_dead := false
+
+var gravity: float
 
 @onready var art_node: Node2D = $Flip/Art
 
@@ -121,54 +123,71 @@ var facing_direction := 1.0
 func _physics_process(delta: float) -> void:
 	if is_dead: return
 	
+	gravity = normal_gravity
+	
+	is_swiming = $SwimArea.get_overlapping_bodies().size() > 0
+	if is_swiming:
+		gravity *= swim_gravity_reduce
+		coyote_timer = coyote_time_ticks / TPS
+	
 	if is_clibing:
-		if $ClimbArea.get_overlapping_bodies().size() == 0:
-			is_clibing = false
-		
-		speed_vertical = input_move.y * climb_speed_vertical
-		speed_move = input_move.x * climb_speed_horizontal
-		
-		if input_jump_press:
-			speed_vertical = -calculate_jump_velocity(jump_height)
-			is_jumping = true
-			is_clibing = false
-		
-		move()
+		process_state_climb(delta)
 	elif dash_timer > 0.0:
-		dash_timer -= delta
-		move_and_slide()
-		process_doublejump(delta)
-		if input_jump_press or is_on_wall():
-			dash_timer = 0.0
+		process_state_dash(delta)
 	else:
-		if is_on_floor():
-			can_dash = true
-			can_double_jump = true
-			is_jumping = false
-			is_double_jumping = false
-		
-		if $ClimbArea.get_overlapping_bodies():
-			if input_move.y != 0.0:
-				is_clibing = true
-				is_jumping = false
-				is_double_jumping = false
-				can_dash = true
-				can_double_jump = true
-		
-		process_movement(delta)
-		process_gravity(delta)
-		process_jump(delta)
-		process_doublejump(delta)
-		
-		move()
-		
-		process_dash(delta)
+		process_state_platformer(delta)
 	
 	input_jump_press = false
 	input_action_press = false
 
+func process_state_climb(delta: float) -> void:
+	if $ClimbArea.get_overlapping_bodies().size() == 0 or is_on_floor():
+		is_clibing = false
+	
+	speed_vertical = input_move.y * climb_speed_vertical
+	speed_move = input_move.x * climb_speed_horizontal
+	
+	if input_jump_press:
+		speed_vertical = -calculate_jump_velocity(jump_height)
+		is_jumping = true
+		is_clibing = false
+	
+	move()
+
+func process_state_dash(delta: float) -> void:
+	dash_timer -= delta
+	move_and_slide()
+	process_doublejump(delta)
+	if input_jump_press or is_on_wall():
+		dash_timer = 0.0
+
+func process_state_platformer(delta: float) -> void:
+	if is_on_floor():
+		can_dash = true
+		can_double_jump = true
+		is_jumping = false
+		is_double_jumping = false
+
+	if $ClimbArea.get_overlapping_bodies():
+		if input_move.y != 0.0 and not (is_on_floor() and input_move.y > 0.0):
+			is_clibing = true
+			is_jumping = false
+			is_double_jumping = false
+			can_dash = true
+			can_double_jump = true
+	
+	process_movement(delta)
+	process_gravity(delta)
+	process_jump(delta)
+	process_doublejump(delta)
+	
+	move()
+	
+	process_dash(delta)
+
 func process_movement(delta: float) -> void:
-	speed_move = input_move.x * move_max_speed
+	var speed := swim_speed if is_swiming else walk_speed
+	speed_move = input_move.x * speed
 	
 	var hit_wall_on_left := test_move(transform, Vector2.LEFT)
 	var hit_wall_on_right := test_move(transform, Vector2.RIGHT)
@@ -196,6 +215,7 @@ func process_gravity(delta: float) -> void:
 	else:
 		speed_vertical += gravity * delta
 	
+	var max_fall_speed := calculate_jump_velocity(jump_height) * max_fall_speed_ratio
 	if speed_vertical > max_fall_speed:
 		speed_vertical = max_fall_speed
 
@@ -216,11 +236,11 @@ func process_jump(delta: float) -> void:
 	
 	coyote_timer -= delta
 	if is_on_floor():
-		coyote_timer = coyote_time_frames / FRAME_BASIS
+		coyote_timer = coyote_time_ticks / TPS
 	
 	jump_buffer_timer -= delta
 	if input_jump_press:
-		jump_buffer_timer = jump_buffer_frames / FRAME_BASIS
+		jump_buffer_timer = jump_buffer_ticks / TPS
 	
 	if coyote_timer > 0.0 and jump_buffer_timer > 0.0:
 		is_jumping = true

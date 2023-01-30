@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://3xo70nvp6fty"]
+[gd_scene load_steps=22 format=3 uid="uid://3xo70nvp6fty"]
 
 [ext_resource type="Script" path="res://entities/player.gd" id="1_d0u18"]
 [ext_resource type="Texture2D" uid="uid://ftfxf0k65q1e" path="res://entities/player.png" id="2_hjb7f"]
@@ -322,6 +322,9 @@ tracks/4/keys = {
 "update": 1,
 "values": [7]
 }
+
+[sub_resource type="Animation" id="Animation_2h2wo"]
+length = 0.001
 
 [sub_resource type="Animation" id="Animation_hg2f6"]
 length = 0.4
@@ -906,6 +909,7 @@ _data = {
 "Hurt": SubResource("Animation_8pepk"),
 "Idle": SubResource("Animation_uw7io"),
 "Jump": SubResource("Animation_vxf2t"),
+"RESET": SubResource("Animation_2h2wo"),
 "Walk": SubResource("Animation_hg2f6"),
 "climb": SubResource("Animation_fv7ds"),
 "dash": SubResource("Animation_pptt5"),
@@ -917,26 +921,26 @@ _data = {
 "walk": SubResource("Animation_i1247")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_33p7t"]
-size = Vector2(4, 5)
-
 [sub_resource type="CircleShape2D" id="CircleShape2D_w7vl2"]
 radius = 0.01
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a4lgu"]
-size = Vector2(4, 4)
+size = Vector2(5, 6)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_33p7t"]
+size = Vector2(4, 5)
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
 collision_layer = 16
 floor_constant_speed = true
 script = ExtResource("1_d0u18")
-move_max_speed = 36.0
-jump_frames = 35
+walk_speed = 34.0
 jump_height = 9.0
+max_fall_speed_ratio = 1.67
 double_jump_height = 12.0
 dash_distance = 24.0
-dash_frames = 12.0
+dash_ticks = 15.0
 climb_speed_vertical = 30.0
 climb_speed_horizontal = 20.0
 
@@ -950,7 +954,6 @@ texture_filter = 1
 texture = ExtResource("2_hjb7f")
 hframes = 4
 vframes = 4
-frame = 9
 metadata/_aseprite_wizard_config_ = {
 "layer": "",
 "o_ex_p": "",
@@ -967,16 +970,12 @@ libraries = {
 "": SubResource("AnimationLibrary_cnvyn")
 }
 
-[node name="Collision" type="CollisionShape2D" parent="."]
-position = Vector2(0, -2.5)
-shape = SubResource("RectangleShape2D_33p7t")
-
 [node name="LevelDetector" type="Area2D" parent="."]
-position = Vector2(0, -2)
 collision_layer = 0
 collision_mask = 128
 
 [node name="Shape" type="CollisionShape2D" parent="LevelDetector"]
+position = Vector2(0, -2)
 shape = SubResource("CircleShape2D_w7vl2")
 
 [node name="ClimbArea" type="Area2D" parent="."]
@@ -984,7 +983,20 @@ collision_layer = 0
 collision_mask = 2
 
 [node name="Shape" type="CollisionShape2D" parent="ClimbArea"]
-position = Vector2(0, -2)
+position = Vector2(0, -3)
 shape = SubResource("RectangleShape2D_a4lgu")
+
+[node name="SwimArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4
+
+[node name="Shape" type="CollisionShape2D" parent="SwimArea"]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_a4lgu")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -2.5)
+shape = SubResource("RectangleShape2D_33p7t")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [connection signal="area_entered" from="LevelDetector" to="." method="_on_level_detector_area_entered"]

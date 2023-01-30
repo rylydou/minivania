@@ -16,14 +16,26 @@ func _enter_tree() -> void:
 	get_window().grab_focus()
 
 func _ready() -> void:
-	var entities: Array = $Map/start/entities.get_meta('LDtk_entity_instances')
+	var map_data: Dictionary = $Map.get_meta('LDtk_raw_data')
 	
-	for entity in entities:
-		if not entity.identifier == 'player_start': continue
+	for entry in map_data.toc:
+		if not entry.identifier == 'player_start': continue
+		var entity_def: Dictionary = entry.instances[0]
+		
+		var level: Dictionary
+		for _level in map_data.levels:
+			if _level.iid == entity_def.levelIid:
+				level = _level
+		
+		var entity: Dictionary
+		for _entity in level.entities:
+			if _entity.identifier:
+				pass
+		
 		print('found player start at %s' % entity.px)
 		player.position = entity.px
 		player.set_respawn_point()
-		# player.position.y -= 8
+		player.position.y -= 8
 		break
 
 func enter_room(level: Node2D):
