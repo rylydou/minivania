@@ -943,6 +943,7 @@ dash_distance = 24.0
 dash_ticks = 15.0
 climb_speed_vertical = 30.0
 climb_speed_horizontal = 20.0
+swim_surface_jump_height = 4.0
 
 [node name="Flip" type="Node2D" parent="."]
 position = Vector2(0, -4)
@@ -950,6 +951,7 @@ position = Vector2(0, -4)
 [node name="Art" type="Node2D" parent="Flip"]
 
 [node name="Sprite" type="Sprite2D" parent="Flip/Art"]
+self_modulate = Color(1, 1, 0, 1)
 texture_filter = 1
 texture = ExtResource("2_hjb7f")
 hframes = 4
@@ -994,9 +996,18 @@ collision_mask = 4
 position = Vector2(0, -3)
 shape = SubResource("RectangleShape2D_a4lgu")
 
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 1280
+
+[node name="Shape" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_a4lgu")
+
 [node name="Shape" type="CollisionShape2D" parent="."]
 position = Vector2(0, -2.5)
 shape = SubResource("RectangleShape2D_33p7t")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [connection signal="area_entered" from="LevelDetector" to="." method="_on_level_detector_area_entered"]
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]

@@ -1,17 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://d2v0jq8eyo456"]
+[gd_scene load_steps=5 format=3 uid="uid://d2v0jq8eyo456"]
 
 [ext_resource type="Texture2D" uid="uid://dephll84ghksl" path="res://sprites/spike.png" id="1_27p2p"]
 [ext_resource type="Script" path="res://entities/spike.gd" id="1_gulp0"]
 
+[sub_resource type="Curve" id="Curve_04vk3"]
+bake_resolution = 64
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_jy6wl"]
-radius = 4.0
+radius = 3.0
 
 [node name="Spike" type="Area2D"]
-collision_layer = 32
+collision_layer = 256
 collision_mask = 0
 script = ExtResource("1_gulp0")
+curve = SubResource("Curve_04vk3")
 
 [node name="Sprite" type="Sprite2D" parent="."]
+self_modulate = Color(1, 0, 1, 1)
 texture = ExtResource("1_27p2p")
 
 [node name="Shape" type="CollisionShape2D" parent="."]

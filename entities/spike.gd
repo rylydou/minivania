@@ -5,6 +5,7 @@ const TPS := 60.0
 @export var wait_time := 0.5
 @export var speed := 8.0
 @export var points: Array[Vector2] = []
+@export var curve: Curve
 
 func init(dict: Dictionary) -> void:
 	var fields: Dictionary = dict.fields
@@ -21,7 +22,10 @@ func init(dict: Dictionary) -> void:
 
 var index := 0
 var wait_timer := 0.0
+var start_point: Vector2
 var target_point: Vector2
+var distance := 0.0
+var progress := 0.0
 func _physics_process(delta: float) -> void:
 	#return
 	if position == target_point:
@@ -32,11 +36,16 @@ func _physics_process(delta: float) -> void:
 		
 		next_point()
 	
-	position = position.move_toward(target_point, speed * delta)
+	progress += speed * delta
+	position = start_point.lerp(target_point, curve.sample_baked(progress / distance))
+	# position = position.move_toward(target_point, speed * delta)
 
 func next_point() -> void:
 	index += 1
 	if index >= points.size():
 		index = 0
 	
+	start_point = position
 	target_point = points[index]
+	distance = start_point.distance_to(target_point)
+	progress = 0.0

@@ -38,6 +38,7 @@ var can_dash := false
 @export_group('Climb State')
 @export var climb_speed_vertical := 24.0
 @export var climb_speed_horizontal := 16.0
+@export var climb_coyote_time_ticks := 10
 var is_clibing := false
 
 @export_group('Swim State')
@@ -46,7 +47,8 @@ var is_clibing := false
 @export var swim_gravity_reduce := 0.5
 
 @export_group('Dead State')
-@export var transition_speed := 96.0
+@export var death_wait_ticks := 10
+@export var death_glide_ticks := 60
 
 var is_swiming := false
 var is_dead := false
@@ -125,10 +127,20 @@ func _physics_process(delta: float) -> void:
 	
 	gravity = normal_gravity
 	
-	is_swiming = $SwimArea.get_overlapping_bodies().size() > 0
 	if is_swiming:
-		gravity *= swim_gravity_reduce
-		coyote_timer = coyote_time_ticks / TPS
+		if $SwimArea.get_overlapping_bodies().size() == 0:
+			is_swiming = false
+			gravity = normal_gravity
+			speed_vertical = -calculate_jump_velocity(swim_surface_jump_height)
+		else: 
+			gravity *= swim_gravity_reduce
+			coyote_timer = coyote_time_ticks / TPS
+			can_double_jump = true
+			can_dash = true
+	elif $SwimArea.get_overlapping_bodies().size() > 0:
+		is_swiming = true
+		is_jumping = false
+		is_double_jumping = false
 	
 	if is_clibing:
 		process_state_climb(delta)
@@ -143,6 +155,7 @@ func _physics_process(delta: float) -> void:
 func process_state_climb(delta: float) -> void:
 	if $ClimbArea.get_overlapping_bodies().size() == 0 or is_on_floor():
 		is_clibing = false
+		coyote_timer = climb_coyote_time_ticks / TPS
 	
 	speed_vertical = input_move.y * climb_speed_vertical
 	speed_move = input_move.x * climb_speed_horizontal
@@ -187,6 +200,7 @@ func process_state_platformer(delta: float) -> void:
 
 func process_movement(delta: float) -> void:
 	var speed := swim_speed if is_swiming else walk_speed
+	
 	speed_move = input_move.x * speed
 	
 	var hit_wall_on_left := test_move(transform, Vector2.LEFT)
@@ -289,11 +303,11 @@ func set_respawn_point() -> void:
 func die() -> void:
 	is_dead = true
 	
-	var transition_duration := position.distance_to(respawn_point) / 128.0
-	var tween = get_tree().create_tween()
-	tween.set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
-	await tween.tween_property(self, 'position', respawn_point, transition_duration)\
-		.set_ease(Tween.EASE_IN_OUT)\
+	await get_tree().create_timer(10 / TPS).timeout
+	
+	var tween = get_tree().create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
+	await tween.tween_property(self, 'position', respawn_point, 60 / TPS)\
+		.set_ease(Tween.EASE_IN)\
 		.set_trans(Tween.TRANS_SINE)\
 		.finished
 	
@@ -305,3 +319,7 @@ func _on_level_detector_area_entered(area: Area2D) -> void:
 	if speed_vertical < 0.0:
 		speed_vertical = -calculate_jump_velocity(8 * 3.0 + 2)
 	can_double_jump = true
+
+
+func _on_hurtbox_area_entered(area: Area2D) -> void:
+	die()

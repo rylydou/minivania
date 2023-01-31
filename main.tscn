@@ -7,7 +7,7 @@
 
 [sub_resource type="Curve" id="Curve_g4vxu"]
 max_value = 32.0
-_data = [Vector2(0, 4), 0.0, 0.0, 0, 0, Vector2(0.9, 32), 31.1111, 0.0, 1, 0]
+_data = [Vector2(0, 2), 0.0, 0.0, 0, 0, Vector2(1, 32), 30.0, 0.0, 1, 0]
 point_count = 2
 
 [node name="Main" type="Node"]
@@ -16,6 +16,7 @@ script = ExtResource("1_ctchg")
 [node name="Map" parent="." instance=ExtResource("2_b5214")]
 
 [node name="Player" parent="." instance=ExtResource("4_yg6k3")]
+swim_surface_jump_height = 9.0
 
 [node name="Camera" type="Camera2D" parent="."]
 current = true
