@@ -48,7 +48,9 @@ var is_clibing := false
 
 @export_group('Dead State')
 @export var death_wait_ticks := 10
-@export var death_glide_ticks := 60
+@export var death_glide_speed_curve: Curve
+@export var death_glide_speed_time := 1.0
+var time_dead := 0.0
 
 var is_swiming := false
 var is_dead := false
@@ -79,6 +81,8 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed('debug_teleport'):
 		position = get_global_mouse_position()
 		speed_vertical = 0
+	
+	$FX_Bubbles.emitting = is_swiming
 
 func get_animation() -> String:
 	$Flip/Art/AnimationPlayer.speed_scale = 1.0
@@ -123,7 +127,16 @@ var speed_extra := 0.0
 var speed_vertical := 0.0
 var facing_direction := 1.0
 func _physics_process(delta: float) -> void:
-	if is_dead: return
+	if is_dead:
+		time_dead += delta
+		
+		var speed := death_glide_speed_curve.sample_baked(time_dead / death_glide_speed_time)
+		position = position.move_toward(respawn_point, speed * delta)
+		
+		if position == respawn_point:
+			is_dead = false
+		else:
+			return
 	
 	gravity = normal_gravity
 	
@@ -301,17 +314,9 @@ func set_respawn_point() -> void:
 	respawn_point = position
 
 func die() -> void:
+	if is_dead: return
 	is_dead = true
-	
-	await get_tree().create_timer(10 / TPS).timeout
-	
-	var tween = get_tree().create_tween().set_process_mode(Tween.TWEEN_PROCESS_PHYSICS)
-	await tween.tween_property(self, 'position', respawn_point, 60 / TPS)\
-		.set_ease(Tween.EASE_IN)\
-		.set_trans(Tween.TRANS_SINE)\
-		.finished
-	
-	is_dead = false
+	time_dead = 0.0
 
 func _on_level_detector_area_entered(area: Area2D) -> void:
 	entered_level.emit(area.get_parent())
