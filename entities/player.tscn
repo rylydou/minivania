@@ -933,7 +933,7 @@ size = Vector2(5, 6)
 size = Vector2(4, 5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ek5s3"]
-size = Vector2(1, 1)
+size = Vector2(4, 4)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dlxf8"]
 size = Vector2(1, 1)
@@ -1022,6 +1022,15 @@ position = Vector2(0, -2)
 shape = SubResource("RectangleShape2D_ek5s3")
 debug_color = Color(1, 0, 0, 0.25098)
 
+[node name="CheckpointDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4096
+
+[node name="Shape" type="CollisionShape2D" parent="CheckpointDetector"]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_ek5s3")
+debug_color = Color(1, 0, 0, 0.25098)
+
 [node name="BreatheArea" type="Area2D" parent="."]
 position = Vector2(0, -5)
 collision_layer = 0
@@ -1034,3 +1043,4 @@ debug_color = Color(0, 1, 1, 0.25098)
 
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
 [connection signal="area_entered" from="LevelDetector" to="." method="_on_level_detector_area_entered"]
+[connection signal="area_entered" from="CheckpointDetector" to="." method="_on_checkpoint_detector_area_entered"]

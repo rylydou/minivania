@@ -1,7 +1,8 @@
 extends Node
 
 var entity_database := {
-	'spike': load('res://entities/spike.tscn')
+	'spike': load('res://entities/spike.tscn'),
+	'checkpoint': load('res://entities/checkpoint.tscn'),
 }
 
 func run(level: Node2D) -> void:
@@ -17,6 +18,7 @@ func run(level: Node2D) -> void:
 		var entity_scene:PackedScene = entity_database[identifier]
 		var entity_node:Node2D = entity_scene.instantiate()
 		entity_node.position = entity.px
-		entity_node.init(entity)
+		if entity_node.has_method('init'):
+			entity_node.call('init', entity)
 		
 		level_entities.add_child(entity_node)

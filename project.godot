@@ -120,17 +120,19 @@ debug_teleport={
 
 [layer_names]
 
-2d_physics/layer_1="Ground"
-2d_physics/layer_2="Climb"
-2d_physics/layer_3="Swim"
+2d_physics/layer_1="ground"
+2d_physics/layer_2="climb"
+2d_physics/layer_3="swim"
 2d_physics/layer_4="(resered for terrain)"
-2d_physics/layer_5="Player"
-2d_physics/layer_6="Player Hurtbox"
-2d_physics/layer_7="Player Hitbox"
-2d_physics/layer_8="Room"
-2d_physics/layer_9="Enemy"
-2d_physics/layer_10="Enemy Hurtbox"
-2d_physics/layer_11="Enemy Hitbox"
+2d_physics/layer_5="player"
+2d_physics/layer_6="player hurtbox"
+2d_physics/layer_7="player hitbox"
+2d_physics/layer_8="room"
+2d_physics/layer_9="enemy"
+2d_physics/layer_10="enemy hurtbox"
+2d_physics/layer_11="enemy hitbox"
+2d_physics/layer_12="(reserved)"
+2d_physics/layer_13="checkpoint"
 
 [rendering]
 

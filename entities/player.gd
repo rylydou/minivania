@@ -45,6 +45,7 @@ var is_clibing := false
 @export var swim_speed := 24.0
 @export var swim_surface_jump_height := 24.0
 @export var swim_gravity_reduce := 0.5
+@export var swim_lung_capacity := 30.0
 
 @export_group('Dead State')
 @export var death_wait_ticks := 10
@@ -330,6 +331,9 @@ var respawn_point: Vector2
 func set_respawn_point() -> void:
 	respawn_point = position
 
+func _on_checkpoint_detector_area_entered(area: Area2D) -> void:
+	respawn_point = area.global_position
+
 func die() -> void:
 	if is_dead: return
 	is_dead = true
@@ -337,11 +341,9 @@ func die() -> void:
 
 func _on_level_detector_area_entered(area: Area2D) -> void:
 	entered_level.emit(area.get_parent())
-	set_respawn_point()
 	if speed_vertical < 0.0:
 		speed_vertical = -calculate_jump_velocity(8 * 3.0 + 2)
-	can_double_jump = true
-
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
 	die()
+
