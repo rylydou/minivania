@@ -6,6 +6,8 @@ const Tile = preload("res://addons/amano-ldtk-importer/util/tile.gd")
 var flag_shape_box := 'shape_box'
 var flag_shape_bottom := 'shape_bottom'
 var flag_shape_thin := 'shape_thin'
+var flag_shape_slope_right := 'shape_slope_right'
+var flag_shape_slope_left := 'shape_slope_left'
 
 var flag_layer_solid := 'layer_solid'
 var physics_layer_solid := 1
@@ -80,6 +82,10 @@ func post_import(tileset: TileSet) -> TileSet:
 						add_thin_polygon(tile_data, tile_extents, layer_id)
 					elif enums.has(flag_shape_bottom):
 						add_bottom_polygon(tile_data, tile_extents, layer_id)
+					elif enums.has(flag_shape_slope_right):
+						add_slope_right_polygon(tile_data, tile_extents, layer_id)
+					elif enums.has(flag_shape_slope_left):
+						add_slope_left_polygon(tile_data, tile_extents, layer_id)
 					else: print('no shape defined')
 					
 					if enums.has(flag_ext_oneway):
@@ -125,6 +131,34 @@ func add_bottom_polygon(data: TileData, extents: Vector2, layer_id: int) -> void
 				Vector2(-extents.x, extents.y),
 				Vector2(extents.x, extents.y),
 				Vector2(extents.x, 0)
+			]
+		)
+	)
+
+func add_slope_right_polygon(data: TileData, extents: Vector2, layer_id: int) -> void:
+	data.set_collision_polygon_points(
+		layer_id,
+		0,
+		PackedVector2Array(
+			[
+				# Vector2(-extents.x, -extents.y),
+				Vector2(-extents.x, extents.y),
+				Vector2(extents.x, extents.y),
+				Vector2(extents.x, -extents.y)
+			]
+		)
+	)
+
+func add_slope_left_polygon(data: TileData, extents: Vector2, layer_id: int) -> void:
+	data.set_collision_polygon_points(
+		layer_id,
+		0,
+		PackedVector2Array(
+			[
+				Vector2(-extents.x, -extents.y),
+				Vector2(-extents.x, extents.y),
+				Vector2(extents.x, extents.y),
+				# Vector2(extents.x, -extents.y)
 			]
 		)
 	)

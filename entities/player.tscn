@@ -1,8 +1,7 @@
-[gd_scene load_steps=25 format=3 uid="uid://3xo70nvp6fty"]
+[gd_scene load_steps=24 format=3 uid="uid://3xo70nvp6fty"]
 
 [ext_resource type="Script" path="res://entities/player.gd" id="1_d0u18"]
 [ext_resource type="Texture2D" uid="uid://ftfxf0k65q1e" path="res://entities/player.png" id="2_hjb7f"]
-[ext_resource type="Texture2D" uid="uid://lxx255r3mkjf" path="res://sprites/fx_bubble.png" id="3_22bgx"]
 
 [sub_resource type="Curve" id="Curve_wxf7t"]
 max_value = 256.0
@@ -927,28 +926,24 @@ _data = {
 "walk": SubResource("Animation_i1247")
 }
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_w7vl2"]
-radius = 0.01
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a4lgu"]
 size = Vector2(5, 6)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_33p7t"]
 size = Vector2(4, 5)
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pwyvl"]
-particle_flag_disable_z = true
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
-turbulence_enabled = true
-turbulence_noise_strength = 0.1
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ek5s3"]
+size = Vector2(1, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dlxf8"]
+size = Vector2(1, 1)
 
 [node name="Player" type="CharacterBody2D"]
 z_index = 1
 collision_layer = 16
 floor_constant_speed = true
 script = ExtResource("1_d0u18")
-walk_speed = 34.0
+walk_speed = 32.0
 jump_height = 9.0
 max_fall_speed_ratio = 1.67
 double_jump_height = 12.0
@@ -986,13 +981,14 @@ libraries = {
 "": SubResource("AnimationLibrary_cnvyn")
 }
 
-[node name="LevelDetector" type="Area2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 128
+collision_mask = 1280
 
-[node name="Shape" type="CollisionShape2D" parent="LevelDetector"]
-position = Vector2(0, -2)
-shape = SubResource("CircleShape2D_w7vl2")
+[node name="Shape" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_a4lgu")
+debug_color = Color(1, 0, 1, 0.25098)
 
 [node name="ClimbArea" type="Area2D" parent="."]
 collision_layer = 0
@@ -1001,6 +997,7 @@ collision_mask = 2
 [node name="Shape" type="CollisionShape2D" parent="ClimbArea"]
 position = Vector2(0, -3)
 shape = SubResource("RectangleShape2D_a4lgu")
+debug_color = Color(0, 1, 0, 0.25098)
 
 [node name="SwimArea" type="Area2D" parent="."]
 collision_layer = 0
@@ -1009,32 +1006,31 @@ collision_mask = 4
 [node name="Shape" type="CollisionShape2D" parent="SwimArea"]
 position = Vector2(0, -3)
 shape = SubResource("RectangleShape2D_a4lgu")
-
-[node name="Hurtbox" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 1280
-
-[node name="Shape" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(0, -3)
-shape = SubResource("RectangleShape2D_a4lgu")
+debug_color = Color(0, 1, 1, 0.25098)
 
 [node name="Shape" type="CollisionShape2D" parent="."]
 position = Vector2(0, -2.5)
 shape = SubResource("RectangleShape2D_33p7t")
-debug_color = Color(0, 0.6, 0.701961, 0.419608)
+debug_color = Color(0, 1, 0, 0.25098)
 
-[node name="FX_Bubbles" type="GPUParticles2D" parent="."]
-modulate = Color(0, 0, 1, 1)
-show_behind_parent = true
-position = Vector2(0, -4)
-emitting = false
-amount = 4
-process_material = SubResource("ParticleProcessMaterial_pwyvl")
-texture = ExtResource("3_22bgx")
-lifetime = 3.0
-explosiveness = 0.5
-fixed_fps = 15
-interpolate = false
+[node name="LevelDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 128
 
-[connection signal="area_entered" from="LevelDetector" to="." method="_on_level_detector_area_entered"]
+[node name="Shape" type="CollisionShape2D" parent="LevelDetector"]
+position = Vector2(0, -2)
+shape = SubResource("RectangleShape2D_ek5s3")
+debug_color = Color(1, 0, 0, 0.25098)
+
+[node name="BreatheArea" type="Area2D" parent="."]
+position = Vector2(0, -5)
+collision_layer = 0
+collision_mask = 4
+
+[node name="Shape" type="CollisionShape2D" parent="BreatheArea"]
+position = Vector2(0, -1)
+shape = SubResource("RectangleShape2D_dlxf8")
+debug_color = Color(0, 1, 1, 0.25098)
+
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="area_entered" from="LevelDetector" to="." method="_on_level_detector_area_entered"]

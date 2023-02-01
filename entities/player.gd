@@ -81,8 +81,6 @@ func _process(delta: float) -> void:
 	if Input.is_action_just_pressed('debug_teleport'):
 		position = get_global_mouse_position()
 		speed_vertical = 0
-	
-	$FX_Bubbles.emitting = is_swiming
 
 func get_animation() -> String:
 	$Flip/Art/AnimationPlayer.speed_scale = 1.0
@@ -109,6 +107,25 @@ func get_animation() -> String:
 		return 'jump'
 	return 'fall'
 
+func reset_movement() -> void:
+	is_dead = false
+	time_dead = 0.0
+	
+	speed_move = 0.0
+	speed_extra = 0.0
+	speed_vertical = 0.0
+	
+	is_jumping = false
+	
+	can_double_jump = true
+	is_double_jumping = false
+	
+	can_dash = true
+	dash_timer = 0.0
+	
+	is_clibing = false
+	
+
 var input_move := Vector2.ZERO
 var input_jump_press := false
 var input_action_press := false
@@ -134,7 +151,7 @@ func _physics_process(delta: float) -> void:
 		position = position.move_toward(respawn_point, speed * delta)
 		
 		if position == respawn_point:
-			is_dead = false
+			reset_movement()
 		else:
 			return
 	
@@ -216,8 +233,8 @@ func process_movement(delta: float) -> void:
 	
 	speed_move = input_move.x * speed
 	
-	var hit_wall_on_left := test_move(transform, Vector2.LEFT)
-	var hit_wall_on_right := test_move(transform, Vector2.RIGHT)
+	var hit_wall_on_left := is_on_wall() and test_move(transform, Vector2.LEFT)
+	var hit_wall_on_right := is_on_wall() and test_move(transform, Vector2.RIGHT)
 	
 	if hit_wall_on_left:
 		if speed_move < 0.0:
@@ -238,7 +255,7 @@ func process_gravity(delta: float) -> void:
 	
 	if is_on_floor():
 		if speed_vertical > 0.0: 
-			speed_vertical = gravity * delta
+			speed_vertical = 0.0
 	else:
 		speed_vertical += gravity * delta
 	
