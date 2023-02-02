@@ -19,7 +19,10 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+EventBus="*res://scripts/autoloads/event_bus.gd"
+Upgrades="*res://scripts/autoloads/upgrades.gd"
 Globals="*res://scripts/autoloads/globals.gd"
+GameManager="*res://scripts/autoloads/game_manager.gd"
 
 [debug]
 

@@ -1,8 +1,10 @@
 extends Node
 
 var entity_database := {
+	'player_start': null,
 	'spike': load('res://entities/spike.tscn'),
 	'checkpoint': load('res://entities/checkpoint.tscn'),
+	'upgrade_item': load('res://entities/upgrade_item.tscn'),
 }
 
 func run(level: Node2D) -> void:
@@ -16,6 +18,9 @@ func run(level: Node2D) -> void:
 			continue
 		
 		var entity_scene:PackedScene = entity_database[identifier]
+		if not is_instance_valid(entity_scene):
+			continue
+		
 		var entity_node:Node2D = entity_scene.instantiate()
 		entity_node.position = entity.px
 		if entity_node.has_method('init'):

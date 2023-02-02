@@ -169,6 +169,9 @@ func _physics_process(delta: float) -> void:
 			can_double_jump = true
 			can_dash = true
 	elif $SwimArea.get_overlapping_bodies().size() > 0:
+		if not Upgrades.swim:
+			die()
+			return
 		is_swiming = true
 		is_jumping = false
 		is_double_jumping = false
@@ -212,13 +215,14 @@ func process_state_platformer(delta: float) -> void:
 		is_jumping = false
 		is_double_jumping = false
 
-	if $ClimbArea.get_overlapping_bodies():
-		if input_move.y != 0.0 and not (is_on_floor() and input_move.y > 0.0):
-			is_clibing = true
-			is_jumping = false
-			is_double_jumping = false
-			can_dash = true
-			can_double_jump = true
+	if Upgrades.climb:
+		if $ClimbArea.get_overlapping_bodies():
+			if input_move.y != 0.0 and not (is_on_floor() and input_move.y > 0.0):
+				is_clibing = true
+				is_jumping = false
+				is_double_jumping = false
+				can_dash = true
+				can_double_jump = true
 	
 	process_movement(delta)
 	process_gravity(delta)
@@ -239,13 +243,13 @@ func process_movement(delta: float) -> void:
 	
 	if hit_wall_on_left:
 		if speed_move < 0.0:
-			speed_move = 0.0
+			speed_move = -1.0
 		if speed_extra < 0.0: 
 			speed_extra = 0.0
 	
 	if hit_wall_on_right:
 		if speed_move > 0.0:
-			speed_move = 0.0
+			speed_move = 1.0
 		if speed_extra > 0.0: 
 			speed_extra = 0.0
 
@@ -297,6 +301,8 @@ func process_jump(delta: float) -> void:
 		speed_vertical = -jump_velocity
 
 func process_doublejump(delta: float) -> void:
+	if not Upgrades.double_jump: return
+	
 	if can_double_jump and input_jump_press:
 		is_double_jumping = true
 		is_jumping = false
@@ -306,6 +312,8 @@ func process_doublejump(delta: float) -> void:
 		speed_vertical = -jump_velocity
 
 func process_dash(delta: float) -> void:
+	if not Upgrades.dash: return
+	
 	if can_dash and input_action_press:
 		speed_move = 0.0
 		speed_extra = 0.0

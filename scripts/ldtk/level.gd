@@ -2,6 +2,7 @@
 extends Node
 
 var scripts = [
+	# preload('res://scripts/ldtk/level_show-collision.gd'),
 	preload('res://scripts/ldtk/level_add-areas.gd'),
 ]
 

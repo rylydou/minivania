@@ -16,7 +16,11 @@ func _enter_tree() -> void:
 	get_window().grab_focus()
 
 func _ready() -> void:
-	var entity_instances: Array = $Map/start/entities.get_meta('LDtk_entity_instances')
+	for layer in $Map.get_children():
+		disable_layer(layer)
+	goto_layer($'Map/layer0')
+	
+	var entity_instances: Array = $'Map/layer0/start/entities'.get_meta('LDtk_entity_instances')
 	
 	for entity_instance in entity_instances:
 		if entity_instance.identifier != 'player_start': continue
@@ -56,3 +60,19 @@ func enter_room(level: Node2D):
 
 func _on_player_entered_level(level: Node2D) -> void:
 	enter_room(level)
+
+var current_layer: CanvasGroup
+func goto_layer(new_layer: CanvasGroup) -> void:
+	if current_layer:
+		disable_layer(current_layer)
+	
+	new_layer.show()
+	new_layer.process_mode = Node.PROCESS_MODE_INHERIT
+	new_layer.position.y = 0.0
+	
+	current_layer = new_layer
+
+func disable_layer(layer: CanvasGroup) -> void:
+	layer.hide()
+	layer.process_mode = Node.PROCESS_MODE_DISABLED
+	layer.position.y = 100000.0

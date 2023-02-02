@@ -6,9 +6,9 @@ var level_area_collision_layer := 8
 var level_area_opacity := 0.25
 
 func post_import(level: Node2D) -> Node2D:
-	var level_fields :Dictionary = level.get_meta("LDtk_level_fields")
-	var level_data :Dictionary = level.get_meta("LDtk_raw_data")
-	var source_file :String = level.get_meta("LDtk_source_file")
+	var level_fields: Dictionary = level.get_meta("LDtk_level_fields")
+	var level_data: Dictionary = level.get_meta("LDtk_raw_data")
+	var source_file: String = level.get_meta("LDtk_source_file")
 	var level_area := get_level_area(level_fields, level_data, {
 		"level_area_padding": level_area_padding,
 		"level_area_collision_layer": level_area_collision_layer,
@@ -22,10 +22,10 @@ static func get_level_area(
 	level_data: Dictionary,
 	options: Dictionary
 ) -> Area2D:
-	var level_area = Area2D.new()
-	var level_size = Vector2i(level_data.pxWid, level_data.pxHei)
-	var level_extents = (level_size / 2) + options.level_area_padding
-	var area_collision_layer = options.level_area_collision_layer
+	var level_area := Area2D.new()
+	var level_size := Vector2i(level_data.pxWid, level_data.pxHei)
+	var level_extents: Vector2i = (level_size / 2) + options.level_area_padding
+	var area_collision_layer:int = options.level_area_collision_layer
 
 	level_area.name = "Area"
 

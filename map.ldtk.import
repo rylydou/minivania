@@ -15,7 +15,7 @@ dest_files=["res://.godot/imported/map.ldtk-b200d11adbd17646993c426f58b154f2.scn
 [params]
 
 world_add_metadata=true
-world_post_import_script=""
+world_post_import_script="res://scripts/ldtk/world.gd"
 Tilesets=""
 tileset_add_metadata=true
 import_tileset_custom_data=true
