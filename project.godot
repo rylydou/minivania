@@ -58,6 +58,28 @@ enabled=PackedStringArray("res://addons/amano-ldtk-importer/plugin.cfg", "res://
 
 import/blender/enabled=false
 
+[importer_defaults]
+
+texture={
+"compress/bptc_ldr": 0,
+"compress/channel_pack": 0,
+"compress/hdr_compression": 1,
+"compress/lossy_quality": 0.7,
+"compress/mode": 0,
+"compress/normal_map": 0,
+"detect_3d/compress_to": 0,
+"mipmaps/generate": false,
+"mipmaps/limit": -1,
+"process/fix_alpha_border": true,
+"process/hdr_as_srgb": false,
+"process/hdr_clamp_exposure": false,
+"process/normal_map_invert_y": false,
+"process/premult_alpha": false,
+"process/size_limit": 0,
+"roughness/mode": 0,
+"roughness/src_normal": ""
+}
+
 [input]
 
 move_left={

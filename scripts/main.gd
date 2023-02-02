@@ -16,7 +16,7 @@ func _enter_tree() -> void:
 	get_window().grab_focus()
 
 func _ready() -> void:
-	var entity_instances: Array[Dictionary] = $Map/start/entities.get_meta('LDtk_entity_instances')
+	var entity_instances: Array = $Map/start/entities.get_meta('LDtk_entity_instances')
 	
 	for entity_instance in entity_instances:
 		if entity_instance.identifier != 'player_start': continue

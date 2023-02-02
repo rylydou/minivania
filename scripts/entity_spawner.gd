@@ -7,7 +7,7 @@ var entity_database := {
 
 func run(level: Node2D) -> void:
 	var level_entities:Node2D = level.get_node('entities')
-	var entities: Array[Dictionary] = level_entities.get_meta('LDtk_entity_instances')
+	var entities: Array = level_entities.get_meta('LDtk_entity_instances')
 	
 	for entity in entities:
 		var identifier:String = entity.identifier

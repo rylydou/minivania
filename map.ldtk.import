@@ -7,8 +7,10 @@ path="res://.godot/imported/map.ldtk-b200d11adbd17646993c426f58b154f2.scn"
 
 [deps]
 
+files=["res:///map/tilesets/map-tileset-8x8.res", "res:///map/tilesets/map-tileset-16x16.res"]
+
 source_file="res://map.ldtk"
-dest_files=["res://.godot/imported/map.ldtk-b200d11adbd17646993c426f58b154f2.scn"]
+dest_files=["res://.godot/imported/map.ldtk-b200d11adbd17646993c426f58b154f2.scn", "res:///map/tilesets/map-tileset-8x8.res", "res:///map/tilesets/map-tileset-16x16.res"]
 
 [params]
 

@@ -1,14 +1,25 @@
-[gd_scene load_steps=6 format=3 uid="uid://drtlqgpagv14b"]
+[gd_scene load_steps=10 format=3 uid="uid://cyir32epvkl46"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_ctchg"]
 [ext_resource type="PackedScene" uid="uid://bik4hkpc00lfa" path="res://map.ldtk" id="2_b5214"]
 [ext_resource type="Script" path="res://scripts/camera.gd" id="3_fvi2k"]
 [ext_resource type="PackedScene" uid="uid://3xo70nvp6fty" path="res://entities/player.tscn" id="4_yg6k3"]
+[ext_resource type="Shader" path="res://shaders/palette_swap.gdshader" id="5_nuwhj"]
+[ext_resource type="Texture2D" uid="uid://cm8qyq3t7ser1" path="res://sprites/luts/lut.png" id="6_spsdo"]
+[ext_resource type="Texture2D" uid="uid://8mwrivr0pjts" path="res://sprites/luts/lut_arcade.png" id="7_ib451"]
 
 [sub_resource type="Curve" id="Curve_g4vxu"]
 max_value = 32.0
 _data = [Vector2(0, 2), 0.0, 0.0, 0, 0, Vector2(1, 32), 30.0, 0.0, 1, 0]
 point_count = 2
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_matcm"]
+shader = ExtResource("5_nuwhj")
+shader_parameter/screen_mode = true
+shader_parameter/num_colors = 8
+shader_parameter/precision = 0.1
+shader_parameter/palette_in = ExtResource("6_spsdo")
+shader_parameter/palette_out = ExtResource("7_ib451")
 
 [node name="Main" type="Node"]
 script = ExtResource("1_ctchg")
@@ -27,6 +38,15 @@ position_smoothing_speed = 6.0
 editor_draw_limits = true
 script = ExtResource("3_fvi2k")
 transition_smoothing_curve = SubResource("Curve_g4vxu")
+
+[node name="ColorRect" type="ColorRect" parent="Camera"]
+z_index = 1000
+z_as_relative = false
+material = SubResource("ShaderMaterial_matcm")
+offset_left = -207.0
+offset_top = -180.0
+offset_right = 233.0
+offset_bottom = 164.0
 
 [connection signal="level_changed" from="." to="Camera" method="_on_main_level_changed"]
 [connection signal="entered_level" from="Player" to="." method="_on_player_entered_level"]
