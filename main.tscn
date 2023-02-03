@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cyir32epvkl46"]
+[gd_scene load_steps=15 format=3 uid="uid://cyir32epvkl46"]
 
 [ext_resource type="Script" path="res://scripts/main.gd" id="1_ctchg"]
 [ext_resource type="PackedScene" uid="uid://bik4hkpc00lfa" path="res://map.ldtk" id="2_b5214"]
@@ -7,6 +7,8 @@
 [ext_resource type="Shader" path="res://shaders/palette_swap.gdshader" id="5_nuwhj"]
 [ext_resource type="Texture2D" uid="uid://cm8qyq3t7ser1" path="res://sprites/luts/lut.png" id="6_spsdo"]
 [ext_resource type="Texture2D" uid="uid://cd1ivrargkbqm" path="res://sprites/luts/lut_aap.png" id="7_nmbhi"]
+[ext_resource type="Script" path="res://scripts/cheater.gd" id="8_b5cs0"]
+[ext_resource type="FontFile" uid="uid://cakfgygbey6rg" path="res://fonts/m3x6.ttf" id="8_l6p4w"]
 
 [sub_resource type="Curve" id="Curve_g4vxu"]
 max_value = 32.0
@@ -20,6 +22,26 @@ shader_parameter/num_colors = 8
 shader_parameter/precision = 0.1
 shader_parameter/palette_in = ExtResource("6_spsdo")
 shader_parameter/palette_out = ExtResource("7_nmbhi")
+
+[sub_resource type="LabelSettings" id="LabelSettings_51sfl"]
+font = ExtResource("8_l6p4w")
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+shadow_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d8fd8"]
+content_margin_left = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 1, 0, 1)
+anti_aliasing = false
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_alcx8"]
 
 [node name="Main" type="Node"]
 script = ExtResource("1_ctchg")
@@ -43,13 +65,54 @@ transition_smoothing_curve = SubResource("Curve_g4vxu")
 z_index = 1000
 z_as_relative = false
 material = SubResource("ShaderMaterial_matcm")
-offset_left = -207.0
+offset_left = -209.0
 offset_top = -180.0
-offset_right = 233.0
+offset_right = 231.0
 offset_bottom = 164.0
 
-[node name="AudioListener2D" type="AudioListener2D" parent="Camera"]
+[node name="Listener" type="AudioListener2D" parent="Camera"]
 current = true
+
+[node name="DebugGUI" type="CanvasLayer" parent="."]
+script = ExtResource("8_b5cs0")
+
+[node name="Center" type="CenterContainer" parent="DebugGUI"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Console" type="VBoxContainer" parent="DebugGUI/Center"]
+custom_minimum_size = Vector2(160, 0)
+layout_mode = 2
+alignment = 1
+
+[node name="Header" type="Label" parent="DebugGUI/Center/Console"]
+layout_mode = 2
+text = "--- cheater ---"
+label_settings = SubResource("LabelSettings_51sfl")
+horizontal_alignment = 1
+vertical_alignment = 2
+uppercase = true
+
+[node name="Input" type="LineEdit" parent="DebugGUI/Center/Console"]
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_fonts/font = ExtResource("8_l6p4w")
+theme_override_styles/normal = SubResource("StyleBoxFlat_d8fd8")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_alcx8")
+text = "command"
+placeholder_text = "command"
+
+[node name="Info" type="Label" parent="DebugGUI/Center/Console"]
+layout_mode = 2
+text = "command info..."
+label_settings = SubResource("LabelSettings_51sfl")
 
 [connection signal="level_changed" from="." to="Camera" method="_on_main_level_changed"]
 [connection signal="entered_level" from="Player" to="." method="_on_player_entered_level"]
+[connection signal="text_submitted" from="DebugGUI/Center/Console/Input" to="DebugGUI" method="_on_console_input_text_submitted"]
