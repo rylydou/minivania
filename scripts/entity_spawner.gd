@@ -7,6 +7,8 @@ var entity_database := {
 	'upgrade_item': load('res://entities/upgrade_item.tscn'),
 }
 
+var placeholder: PackedScene = load('res://entities/placeholder.tscn')
+
 func run(level: Node2D) -> void:
 	var level_entities:Node2D = level.get_node('entities')
 	var entities: Array = level_entities.get_meta('LDtk_entity_instances')
@@ -14,6 +16,10 @@ func run(level: Node2D) -> void:
 	for entity in entities:
 		var identifier:String = entity.identifier
 		if not entity_database.has(identifier):
+			var scene: Node2D = placeholder.instantiate()
+			scene.position = entity.px
+			scene.get_node('Label').text = identifier
+			level_entities.add_child(scene)
 			print('no entity defined for %s' % identifier)
 			continue
 		

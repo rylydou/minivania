@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://b0kgemcewt4xe"]
+
+[ext_resource type="Texture2D" uid="uid://8vv3qgy3qgws" path="res://sprites/placeholder.png" id="1_a8pme"]
+[ext_resource type="FontFile" uid="uid://cakfgygbey6rg" path="res://fonts/m3x6.ttf" id="2_iy3i6"]
+
+[node name="Placeholder" type="Sprite2D"]
+texture = ExtResource("1_a8pme")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -39.5
+offset_top = -30.0
+offset_right = 31.5
+offset_bottom = -14.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("2_iy3i6")
+text = "identifier"
+horizontal_alignment = 1
+vertical_alignment = 2

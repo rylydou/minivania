@@ -27,3 +27,6 @@ func fetch_state(ds: DataStore) -> void:
 	explode = ds.fetch('explode', false)
 	
 	ds.pop_prefix()
+
+func set_upgrade(upgrade: String, state: bool) -> void:
+	set(upgrade, state)

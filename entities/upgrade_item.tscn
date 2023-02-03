@@ -1,12 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://dvjft4f8twm2c"]
+[gd_scene load_steps=5 format=3 uid="uid://dvjft4f8twm2c"]
 
 [ext_resource type="Texture2D" uid="uid://dybc3hjrp84q3" path="res://icon.svg" id="1_8j4u0"]
 [ext_resource type="Script" path="res://entities/upgrade_item.gd" id="1_wtka0"]
+[ext_resource type="FontFile" uid="uid://cakfgygbey6rg" path="res://fonts/m3x6.ttf" id="3_ixi5n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ufx4f"]
 size = Vector2(8, 8)
 
 [node name="UpgradeItem" type="Area2D"]
+collision_layer = 0
+collision_mask = 16
 script = ExtResource("1_wtka0")
 
 [node name="Sprite" type="Sprite2D" parent="."]
@@ -14,3 +17,22 @@ texture = ExtResource("1_8j4u0")
 
 [node name="Shape" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ufx4f")
+
+[node name="Label" type="Label" parent="."]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -22.0
+offset_top = -20.0
+offset_right = 22.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_fonts/font = ExtResource("3_ixi5n")
+text = "name"
+horizontal_alignment = 1
+vertical_alignment = 2
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
