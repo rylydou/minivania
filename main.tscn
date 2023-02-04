@@ -6,9 +6,9 @@
 [ext_resource type="PackedScene" uid="uid://3xo70nvp6fty" path="res://entities/player.tscn" id="4_yg6k3"]
 [ext_resource type="Shader" path="res://shaders/palette_swap.gdshader" id="5_nuwhj"]
 [ext_resource type="Texture2D" uid="uid://cm8qyq3t7ser1" path="res://sprites/luts/lut.png" id="6_spsdo"]
-[ext_resource type="Texture2D" uid="uid://cd1ivrargkbqm" path="res://sprites/luts/lut_aap.png" id="7_nmbhi"]
+[ext_resource type="Texture2D" uid="uid://c75ou5qtlbtxl" path="res://sprites/luts/lut_solarized.png" id="7_gcgg7"]
 [ext_resource type="Script" path="res://scripts/cheater.gd" id="8_b5cs0"]
-[ext_resource type="FontFile" uid="uid://cakfgygbey6rg" path="res://fonts/m3x6.ttf" id="8_l6p4w"]
+[ext_resource type="FontFile" uid="uid://lem43jkmkmin" path="res://fonts/m3x6.ttf" id="8_l6p4w"]
 
 [sub_resource type="Curve" id="Curve_g4vxu"]
 max_value = 32.0
@@ -21,7 +21,7 @@ shader_parameter/screen_mode = true
 shader_parameter/num_colors = 8
 shader_parameter/precision = 0.1
 shader_parameter/palette_in = ExtResource("6_spsdo")
-shader_parameter/palette_out = ExtResource("7_nmbhi")
+shader_parameter/palette_out = ExtResource("7_gcgg7")
 
 [sub_resource type="LabelSettings" id="LabelSettings_51sfl"]
 font = ExtResource("8_l6p4w")

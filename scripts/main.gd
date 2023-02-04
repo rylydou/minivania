@@ -28,7 +28,6 @@ func _ready() -> void:
 		print('found player start at %s' % entity_instance.px)
 		player.position = entity_instance.px
 		player.set_respawn_point()
-		player.position.y -= 8
 		break
 
 func enter_room(level: Node2D):

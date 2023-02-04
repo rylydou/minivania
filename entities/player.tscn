@@ -964,20 +964,20 @@ self_modulate = Color(1, 1, 0, 1)
 texture_filter = 1
 texture = ExtResource("2_hjb7f")
 hframes = 4
-vframes = 3
-frame = 9
+vframes = 4
 metadata/_aseprite_wizard_config_ = {
 "layer": "",
 "o_ex_p": "",
 "o_folder": "",
 "o_name": "",
 "only_visible": false,
-"op_exp": false,
+"op_exp": true,
 "player": "Flip/Art/AnimationPlayer",
 "source": "res://sprites/player.ase"
 }
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Flip/Art"]
+reset_on_save = false
 libraries = {
 "": SubResource("AnimationLibrary_cnvyn")
 }

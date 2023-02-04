@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dybc3hjrp84q3" path="res://icon.svg" id="1_8j4u0"]
 [ext_resource type="Script" path="res://entities/upgrade_item.gd" id="1_wtka0"]
-[ext_resource type="FontFile" uid="uid://cakfgygbey6rg" path="res://fonts/m3x6.ttf" id="3_ixi5n"]
+[ext_resource type="FontFile" uid="uid://lem43jkmkmin" path="res://fonts/m3x6.ttf" id="3_ixi5n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ufx4f"]
 size = Vector2(8, 8)
