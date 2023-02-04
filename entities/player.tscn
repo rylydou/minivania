@@ -943,6 +943,7 @@ z_index = 1
 collision_layer = 16
 floor_constant_speed = true
 script = ExtResource("1_d0u18")
+hp_colors = [Color(1, 0, 0, 1), Color(1, 1, 0, 1), Color(0, 1, 0, 1), Color(0, 1, 1, 1), Color(1, 1, 1, 1)]
 walk_speed = 32.0
 jump_height = 9.0
 max_fall_speed_ratio = 1.67
@@ -1045,3 +1046,4 @@ debug_color = Color(0, 1, 1, 0.25098)
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
 [connection signal="area_entered" from="LevelDetector" to="." method="_on_level_detector_area_entered"]
 [connection signal="area_entered" from="CheckpointDetector" to="." method="_on_checkpoint_detector_area_entered"]
+[connection signal="body_entered" from="BreatheArea" to="." method="_on_breathe_area_body_entered"]

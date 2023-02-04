@@ -4,6 +4,9 @@ signal entered_level(level: Node2D);
 
 const TPS = 60.0
 
+@export var hp_colors: Array[Color]= []
+@onready var hp := hp_colors.size()
+
 @export_group('Platformer State')
 @export var walk_speed := 36.0
 
@@ -63,8 +66,11 @@ var gravity: float
 func _enter_tree() -> void:
 	Globals.player = self
 
+func _ready() -> void:
+	reset_movement()
+	update_color()
+
 func _process(delta: float) -> void:
-	
 	process_inputs()
 	
 	if Input.is_key_pressed(KEY_K) and not is_dead:
@@ -109,6 +115,8 @@ func get_animation() -> String:
 	return 'fall'
 
 func reset_movement() -> void:
+	hp = hp_colors.size()
+	
 	is_dead = false
 	time_dead = 0.0
 	
@@ -156,6 +164,8 @@ func _physics_process(delta: float) -> void:
 		else:
 			return
 	
+	inv_timer -= delta
+	
 	gravity = normal_gravity
 	
 	if is_swiming:
@@ -169,9 +179,6 @@ func _physics_process(delta: float) -> void:
 			can_double_jump = true
 			can_dash = true
 	elif $SwimArea.get_overlapping_bodies().size() > 0:
-		if not Upgrades.swim:
-			die()
-			return
 		is_swiming = true
 		is_jumping = false
 		is_double_jumping = false
@@ -341,6 +348,7 @@ func set_respawn_point() -> void:
 
 func _on_checkpoint_detector_area_entered(area: Area2D) -> void:
 	respawn_point = area.global_position
+	hp = hp_colors.size()
 
 func die() -> void:
 	if is_dead: return
@@ -352,6 +360,19 @@ func _on_level_detector_area_entered(area: Area2D) -> void:
 	if speed_vertical < 0.0:
 		speed_vertical = -calculate_jump_velocity(8 * 3.0 + 2)
 
+@export var inv_frames := 30
+var inv_timer := 0.0
 func _on_hurtbox_area_entered(area: Area2D) -> void:
-	die()
+	if inv_timer > 0.0: return
+	inv_timer = inv_frames / TPS
+	hp -= 1
+	update_color()
+	if hp <= 0:
+		die()
 
+func update_color() -> void:
+	$Flip/Art/Sprite.self_modulate = hp_colors[hp - 1]
+
+func _on_breathe_area_body_entered(body: Node2D) -> void:
+	if not Upgrades.swim:
+		die()
