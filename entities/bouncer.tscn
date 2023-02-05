@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://cy1g02ujwppqd"]
+
+[ext_resource type="Script" path="res://entities/bouncer.gd" id="1_kibfu"]
+[ext_resource type="Texture2D" uid="uid://5y6vt77yklge" path="res://sprites/bouncer.png" id="2_em0r3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ve13f"]
+size = Vector2(8, 6)
+
+[node name="Bouncer" type="Area2D"]
+collision_layer = 0
+collision_mask = 16
+script = ExtResource("1_kibfu")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+self_modulate = Color(0, 1, 0, 1)
+position = Vector2(0, -4)
+texture = ExtResource("2_em0r3")
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2(0, -3)
+shape = SubResource("RectangleShape2D_ve13f")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

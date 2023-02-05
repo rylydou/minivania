@@ -20,15 +20,8 @@ func _ready() -> void:
 		disable_layer(layer)
 	goto_layer($'Map/layer0')
 	
-	var entity_instances: Array = $'Map/layer0/start/entities'.get_meta('LDtk_entity_instances')
-	
-	for entity_instance in entity_instances:
-		if entity_instance.identifier != 'player_start': continue
-		
-		print('found player start at %s' % entity_instance.px)
-		player.position = entity_instance.px
-		player.set_respawn_point()
-		break
+	player.position = $Map.get_meta('player_position', Vector2.ZERO)
+	player.set_respawn_point()
 
 func enter_room(level: Node2D):
 	print('cleaning previous level')

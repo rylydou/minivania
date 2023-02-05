@@ -2,6 +2,7 @@
 extends Node
 
 var scripts = [
+	preload('res://scripts/ldtk/world_spawn-player.gd'),
 	preload('res://scripts/ldtk/world_separate_layers.gd'),
 ]
 

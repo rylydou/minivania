@@ -7,8 +7,7 @@ var layers: Dictionary = {}
 func post_import(world: Node2D) -> Node2D:
 	for level in world.get_children():
 		world.remove_child(level)
-		
-		var level_data: Dictionary = level.get_meta("LDtk_raw_data")
+		var level_data: Dictionary = level.get_meta('LDtk_raw_data')
 		var level_world_depth: int = level_data.worldDepth
 		
 		var layer: CanvasGroup = layers.get(level_world_depth)

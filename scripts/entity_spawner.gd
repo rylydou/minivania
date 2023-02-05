@@ -5,6 +5,7 @@ var entity_database := {
 	'spike': load('res://entities/spike.tscn'),
 	'checkpoint': load('res://entities/checkpoint.tscn'),
 	'upgrade_item': load('res://entities/upgrade_item.tscn'),
+	'bouncer': load('res://entities/bouncer.tscn'),
 }
 
 var placeholder: PackedScene = load('res://entities/placeholder.tscn')

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dvjft4f8twm2c"]
 
-[ext_resource type="Texture2D" uid="uid://dybc3hjrp84q3" path="res://icon.svg" id="1_8j4u0"]
 [ext_resource type="Script" path="res://entities/upgrade_item.gd" id="1_wtka0"]
+[ext_resource type="Texture2D" uid="uid://vc42odpq48g1" path="res://sprites/upgrade.png" id="2_734gt"]
 [ext_resource type="FontFile" uid="uid://lem43jkmkmin" path="res://fonts/m3x6.ttf" id="3_ixi5n"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ufx4f"]
@@ -13,7 +13,8 @@ collision_mask = 16
 script = ExtResource("1_wtka0")
 
 [node name="Sprite" type="Sprite2D" parent="."]
-texture = ExtResource("1_8j4u0")
+self_modulate = Color(1, 1, 0, 1)
+texture = ExtResource("2_734gt")
 
 [node name="Shape" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ufx4f")

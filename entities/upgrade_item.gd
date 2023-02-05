@@ -4,7 +4,6 @@ extends Area2D
 
 func init(dict: Dictionary) -> void:
 	var fields: Dictionary = dict.fields
-	
 	upgrade_type = fields.upgrade_type
 	
 	$Label.text = upgrade_type

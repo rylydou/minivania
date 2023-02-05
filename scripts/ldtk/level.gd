@@ -2,8 +2,8 @@
 extends Node
 
 var scripts = [
-	# preload('res://scripts/ldtk/level_show-collision.gd'),
 	preload('res://scripts/ldtk/level_add-areas.gd'),
+	# preload('res://scripts/ldtk/level_show-collision.gd'),
 ]
 
 func post_import(level: Node2D) -> Node2D:

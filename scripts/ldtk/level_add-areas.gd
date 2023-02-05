@@ -31,6 +31,7 @@ static func get_level_area(
 
 	level_area.position.x = level_extents.x
 	level_area.position.y = level_extents.y
+	level_area.collision_layer = 0
 	level_area.set_collision_layer_value(area_collision_layer, true)
 	level_area.collision_mask = 0
 	level_area.show_behind_parent = true

@@ -3,12 +3,12 @@
 [ext_resource type="Script" path="res://entities/player.gd" id="1_d0u18"]
 [ext_resource type="Texture2D" uid="uid://ftfxf0k65q1e" path="res://entities/player.png" id="2_hjb7f"]
 
-[sub_resource type="Curve" id="Curve_wxf7t"]
+[sub_resource type="Curve" id="Curve_1can0"]
 max_value = 256.0
 _data = [Vector2(0.1, 0), 0.0, 284.444, 0, 1, Vector2(1, 256), 284.444, 0.0, 1, 0]
 point_count = 2
 
-[sub_resource type="Animation" id="Animation_rfcdk"]
+[sub_resource type="Animation" id="Animation_sgp7l"]
 length = 0.6
 loop_mode = 1
 tracks/0/type = "value"
@@ -72,7 +72,7 @@ tracks/4/keys = {
 "values": [9, 10]
 }
 
-[sub_resource type="Animation" id="Animation_iq0c3"]
+[sub_resource type="Animation" id="Animation_whkd0"]
 length = 0.3
 loop_mode = 1
 tracks/0/type = "value"
@@ -136,7 +136,7 @@ tracks/4/keys = {
 "values": [8]
 }
 
-[sub_resource type="Animation" id="Animation_8pepk"]
+[sub_resource type="Animation" id="Animation_uor46"]
 length = 0.3
 loop_mode = 1
 tracks/0/type = "value"
@@ -200,7 +200,7 @@ tracks/4/keys = {
 "values": [11]
 }
 
-[sub_resource type="Animation" id="Animation_uw7io"]
+[sub_resource type="Animation" id="Animation_fyntv"]
 length = 1.1
 loop_mode = 1
 tracks/0/type = "value"
@@ -264,7 +264,7 @@ tracks/4/keys = {
 "values": [0, 0, 1, 2]
 }
 
-[sub_resource type="Animation" id="Animation_vxf2t"]
+[sub_resource type="Animation" id="Animation_ru1ai"]
 length = 0.3
 loop_mode = 1
 tracks/0/type = "value"
@@ -328,10 +328,10 @@ tracks/4/keys = {
 "values": [7]
 }
 
-[sub_resource type="Animation" id="Animation_2h2wo"]
+[sub_resource type="Animation" id="Animation_06ed6"]
 length = 0.001
 
-[sub_resource type="Animation" id="Animation_hg2f6"]
+[sub_resource type="Animation" id="Animation_jokbf"]
 length = 0.4
 loop_mode = 1
 step = 0.0333333
@@ -396,7 +396,7 @@ tracks/4/keys = {
 "values": [3, 4, 5, 6]
 }
 
-[sub_resource type="Animation" id="Animation_fv7ds"]
+[sub_resource type="Animation" id="Animation_nik4g"]
 length = 0.4
 loop_mode = 1
 tracks/0/type = "value"
@@ -460,7 +460,7 @@ tracks/4/keys = {
 "values": [9, 10]
 }
 
-[sub_resource type="Animation" id="Animation_pptt5"]
+[sub_resource type="Animation" id="Animation_lk77t"]
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -523,7 +523,7 @@ tracks/4/keys = {
 "values": [12]
 }
 
-[sub_resource type="Animation" id="Animation_1eqov"]
+[sub_resource type="Animation" id="Animation_aq7ja"]
 length = 0.3
 loop_mode = 1
 tracks/0/type = "value"
@@ -587,7 +587,7 @@ tracks/4/keys = {
 "values": [7]
 }
 
-[sub_resource type="Animation" id="Animation_pd76w"]
+[sub_resource type="Animation" id="Animation_mocj7"]
 length = 0.3
 loop_mode = 1
 tracks/0/type = "value"
@@ -651,7 +651,7 @@ tracks/4/keys = {
 "values": [8]
 }
 
-[sub_resource type="Animation" id="Animation_3638a"]
+[sub_resource type="Animation" id="Animation_vm1be"]
 length = 0.3
 loop_mode = 1
 tracks/0/type = "value"
@@ -715,7 +715,7 @@ tracks/4/keys = {
 "values": [11]
 }
 
-[sub_resource type="Animation" id="Animation_yistc"]
+[sub_resource type="Animation" id="Animation_y54d6"]
 length = 2.0
 loop_mode = 1
 tracks/0/type = "value"
@@ -779,7 +779,7 @@ tracks/4/keys = {
 "values": [0, 1]
 }
 
-[sub_resource type="Animation" id="Animation_4v8iu"]
+[sub_resource type="Animation" id="Animation_bhyjf"]
 length = 0.3
 loop_mode = 1
 tracks/0/type = "value"
@@ -843,7 +843,7 @@ tracks/4/keys = {
 "values": [6]
 }
 
-[sub_resource type="Animation" id="Animation_i1247"]
+[sub_resource type="Animation" id="Animation_glwew"]
 length = 0.4
 loop_mode = 1
 tracks/0/type = "value"
@@ -907,35 +907,35 @@ tracks/4/keys = {
 "values": [2, 3, 4, 5]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_cnvyn"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lt5wg"]
 _data = {
-"Climb": SubResource("Animation_rfcdk"),
-"Fall": SubResource("Animation_iq0c3"),
-"Hurt": SubResource("Animation_8pepk"),
-"Idle": SubResource("Animation_uw7io"),
-"Jump": SubResource("Animation_vxf2t"),
-"RESET": SubResource("Animation_2h2wo"),
-"Walk": SubResource("Animation_hg2f6"),
-"climb": SubResource("Animation_fv7ds"),
-"dash": SubResource("Animation_pptt5"),
-"double_jump": SubResource("Animation_1eqov"),
-"fall": SubResource("Animation_pd76w"),
-"hurt": SubResource("Animation_3638a"),
-"idle": SubResource("Animation_yistc"),
-"jump": SubResource("Animation_4v8iu"),
-"walk": SubResource("Animation_i1247")
+"Climb": SubResource("Animation_sgp7l"),
+"Fall": SubResource("Animation_whkd0"),
+"Hurt": SubResource("Animation_uor46"),
+"Idle": SubResource("Animation_fyntv"),
+"Jump": SubResource("Animation_ru1ai"),
+"RESET": SubResource("Animation_06ed6"),
+"Walk": SubResource("Animation_jokbf"),
+"climb": SubResource("Animation_nik4g"),
+"dash": SubResource("Animation_lk77t"),
+"double_jump": SubResource("Animation_aq7ja"),
+"fall": SubResource("Animation_mocj7"),
+"hurt": SubResource("Animation_vm1be"),
+"idle": SubResource("Animation_y54d6"),
+"jump": SubResource("Animation_bhyjf"),
+"walk": SubResource("Animation_glwew")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_a4lgu"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3srev"]
 size = Vector2(5, 6)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_33p7t"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_whlan"]
 size = Vector2(4, 5)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ek5s3"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5k0at"]
 size = Vector2(4, 4)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_dlxf8"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tt33b"]
 size = Vector2(1, 1)
 
 [node name="Player" type="CharacterBody2D"]
@@ -953,7 +953,7 @@ dash_ticks = 15.0
 climb_speed_vertical = 30.0
 climb_speed_horizontal = 20.0
 swim_surface_jump_height = 4.0
-death_glide_speed_curve = SubResource("Curve_wxf7t")
+death_glide_speed_curve = SubResource("Curve_1can0")
 
 [node name="Flip" type="Node2D" parent="."]
 position = Vector2(0, -4)
@@ -980,7 +980,7 @@ metadata/_aseprite_wizard_config_ = {
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Flip/Art"]
 reset_on_save = false
 libraries = {
-"": SubResource("AnimationLibrary_cnvyn")
+"": SubResource("AnimationLibrary_lt5wg")
 }
 
 [node name="Hurtbox" type="Area2D" parent="."]
@@ -989,7 +989,7 @@ collision_mask = 1280
 
 [node name="Shape" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0, -3)
-shape = SubResource("RectangleShape2D_a4lgu")
+shape = SubResource("RectangleShape2D_3srev")
 debug_color = Color(1, 0, 1, 0.25098)
 
 [node name="ClimbArea" type="Area2D" parent="."]
@@ -998,7 +998,7 @@ collision_mask = 2
 
 [node name="Shape" type="CollisionShape2D" parent="ClimbArea"]
 position = Vector2(0, -3)
-shape = SubResource("RectangleShape2D_a4lgu")
+shape = SubResource("RectangleShape2D_3srev")
 debug_color = Color(0, 1, 0, 0.25098)
 
 [node name="SwimArea" type="Area2D" parent="."]
@@ -1007,12 +1007,12 @@ collision_mask = 4
 
 [node name="Shape" type="CollisionShape2D" parent="SwimArea"]
 position = Vector2(0, -3)
-shape = SubResource("RectangleShape2D_a4lgu")
+shape = SubResource("RectangleShape2D_3srev")
 debug_color = Color(0, 1, 1, 0.25098)
 
 [node name="Shape" type="CollisionShape2D" parent="."]
 position = Vector2(0, -2.5)
-shape = SubResource("RectangleShape2D_33p7t")
+shape = SubResource("RectangleShape2D_whlan")
 debug_color = Color(0, 1, 0, 0.25098)
 
 [node name="LevelDetector" type="Area2D" parent="."]
@@ -1021,7 +1021,7 @@ collision_mask = 128
 
 [node name="Shape" type="CollisionShape2D" parent="LevelDetector"]
 position = Vector2(0, -2)
-shape = SubResource("RectangleShape2D_ek5s3")
+shape = SubResource("RectangleShape2D_5k0at")
 debug_color = Color(1, 0, 0, 0.25098)
 
 [node name="CheckpointDetector" type="Area2D" parent="."]
@@ -1030,7 +1030,7 @@ collision_mask = 4096
 
 [node name="Shape" type="CollisionShape2D" parent="CheckpointDetector"]
 position = Vector2(0, -2)
-shape = SubResource("RectangleShape2D_ek5s3")
+shape = SubResource("RectangleShape2D_5k0at")
 debug_color = Color(1, 0, 0, 0.25098)
 
 [node name="BreatheArea" type="Area2D" parent="."]
@@ -1040,7 +1040,7 @@ collision_mask = 4
 
 [node name="Shape" type="CollisionShape2D" parent="BreatheArea"]
 position = Vector2(0, -1)
-shape = SubResource("RectangleShape2D_dlxf8")
+shape = SubResource("RectangleShape2D_tt33b")
 debug_color = Color(0, 1, 1, 0.25098)
 
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
