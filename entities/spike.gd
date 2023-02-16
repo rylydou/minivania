@@ -14,8 +14,9 @@ func init(dict: Dictionary) -> void:
 	
 	speed = fields.speed
 	
-	points = fields.points
-	points = points.map(func(point): return point * 8 + Vector2(4, 4))
+	points.clear()
+	for point in fields.points:
+		points.push_back(Vector2(point) * 8 + Vector2(4, 4)) 
 	points.push_front(position)
 	
 	next_point()
