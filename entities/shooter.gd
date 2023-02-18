@@ -13,7 +13,7 @@ func init(dict: Dictionary) -> void:
 	projectile_speed = fields.projectile_speed
 	direction = fields.direction
 	shoot_delay= fields.shoot_delay
-	til_shoot = shoot_delay
+	til_shoot = shoot_delay/60
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta:float):
 	til_shoot-=delta
