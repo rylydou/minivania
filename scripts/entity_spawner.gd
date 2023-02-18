@@ -6,6 +6,7 @@ var entity_database := {
 	'checkpoint': load('res://entities/checkpoint.tscn'),
 	'upgrade_item': load('res://entities/upgrade_item.tscn'),
 	'bouncer': load('res://entities/bouncer.tscn'),
+	'shooter': load('res://entities/shooter.tscn'),	
 }
 
 var placeholder: PackedScene = load('res://entities/placeholder.tscn')
